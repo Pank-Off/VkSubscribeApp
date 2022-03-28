@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">VkSubscribeApp</string>
+    <string name="sign_in">Войти</string>
+    <string name="communities">Сообщества</string>
 
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>

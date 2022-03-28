@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding
         get() = _binding!!
 
+    private val communitiesAdapter = CommunitiesAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
@@ -36,13 +38,23 @@ class MainActivity : AppCompatActivity() {
                 MainViewState.Loading -> binding.progressBar.visibility = View.VISIBLE
                 is MainViewState.Success -> {
                     binding.progressBar.visibility = View.GONE
+                    communitiesAdapter.submitList(viewState.items)
                     viewState.items.forEach {
                         Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
                     }
                 }
             }
         }
+        setUpAdapter()
     }
+
+    private fun setUpAdapter() {
+        with(binding) {
+            communityList.layoutManager = GridLayoutManager(this@MainActivity, 3)
+            communityList.adapter = communitiesAdapter
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
