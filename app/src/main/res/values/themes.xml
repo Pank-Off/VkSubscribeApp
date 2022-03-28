@@ -34,6 +34,7 @@
         <item name="android:layout_marginStart">32dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginEnd">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
         <item name="android:text">@string/main_description</item>
         <item name="android:textColor">@color/color_main_description</item>
         <item name="android:textSize">16sp</item>
