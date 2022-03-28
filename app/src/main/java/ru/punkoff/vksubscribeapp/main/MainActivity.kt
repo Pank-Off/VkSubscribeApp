@@ -33,11 +33,13 @@ class MainActivity : AppCompatActivity() {
                 MainViewState.EMPTY -> Unit
                 is MainViewState.ERROR -> {
                     Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                    binding.descriptionTv.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
                 }
                 MainViewState.Loading -> binding.progressBar.visibility = View.VISIBLE
                 is MainViewState.Success -> {
                     binding.progressBar.visibility = View.GONE
+                    binding.descriptionTv.visibility = View.VISIBLE
                     communitiesAdapter.submitList(viewState.items)
                     viewState.items.forEach {
                         Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
