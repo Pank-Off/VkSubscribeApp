@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
+import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
+import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 
 class MainActivity : AppCompatActivity() {
@@ -50,6 +52,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpAdapter() {
         with(binding) {
+            communitiesAdapter.attachListener(object : OnItemClickListener {
+                override fun onClick(isSelected: Boolean) {
+
+                }
+            })
             communityList.layoutManager = GridLayoutManager(this@MainActivity, 3)
             communityList.adapter = communitiesAdapter
         }

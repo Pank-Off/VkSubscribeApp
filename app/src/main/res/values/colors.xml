@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="vk_main_color">#4986CC</color>
+    <color name="border_item_color">#3F8AE0</color>
     <color name="color_main_description">#818C99</color>
 </resources>
