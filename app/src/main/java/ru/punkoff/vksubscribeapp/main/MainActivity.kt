@@ -12,6 +12,7 @@ import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
 import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
+import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 
 class MainActivity : AppCompatActivity() {
@@ -39,11 +40,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 MainViewState.Loading -> binding.progressBar.visibility = View.VISIBLE
                 is MainViewState.Success -> {
+                    val data = mutableListOf<Subscription>()
                     binding.progressBar.visibility = View.INVISIBLE
-                    communitiesAdapter.submitList(viewState.items)
                     viewState.items.forEach {
+                        data.add(Subscription(it.id, it.name, it.photo100))
                         Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
                     }
+
+                    communitiesAdapter.submitList(data)
                 }
             }
         }

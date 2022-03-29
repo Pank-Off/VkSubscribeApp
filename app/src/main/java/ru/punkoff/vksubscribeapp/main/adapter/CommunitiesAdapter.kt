@@ -1,25 +1,26 @@
 package ru.punkoff.vksubscribeapp.main.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.generic.RoundingParams
-import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.ItemCommunityBinding
+import ru.punkoff.vksubscribeapp.model.Subscription
 
-val COMMUNITIES_COMPARATOR = object : DiffUtil.ItemCallback<GroupsGroupFull>() {
-    override fun areItemsTheSame(oldItem: GroupsGroupFull, newItem: GroupsGroupFull): Boolean =
+val COMMUNITIES_COMPARATOR = object : DiffUtil.ItemCallback<Subscription>() {
+    override fun areItemsTheSame(oldItem: Subscription, newItem: Subscription): Boolean =
         oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: GroupsGroupFull, newItem: GroupsGroupFull): Boolean =
+    override fun areContentsTheSame(oldItem: Subscription, newItem: Subscription): Boolean =
         oldItem == newItem
 }
 
 class CommunitiesAdapter :
-    ListAdapter<GroupsGroupFull, CommunitiesAdapter.CommunitiesViewHolder>(COMMUNITIES_COMPARATOR) {
+    ListAdapter<Subscription, CommunitiesAdapter.CommunitiesViewHolder>(COMMUNITIES_COMPARATOR) {
 
     private lateinit var listener: OnItemClickListener
     fun attachListener(listener: OnItemClickListener) {
@@ -42,24 +43,30 @@ class CommunitiesAdapter :
 
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(currentItem: GroupsGroupFull) {
+        private val borderColor = binding.root.resources.getColor(R.color.border_item_color, null)
+        fun bind(currentItem: Subscription) {
             with(binding) {
                 name.text = currentItem.name
-                photo.setImageURI(currentItem.photo100)
+                photo.setImageURI(currentItem.imageUri)
+
+                photo.hierarchy.roundingParams = getImageStyle(currentItem)
+
+                Log.e(javaClass.simpleName, "${currentItem.name} - ${currentItem.isSelected}")
                 photo.setOnClickListener {
-                    photo.isSelected = !photo.isSelected
-                    val roundingParams = RoundingParams()
-                    roundingParams.roundAsCircle = true
-
-                    if (photo.isSelected) {
-                        val borderColor = it.resources.getColor(R.color.border_item_color, null)
-                        roundingParams.setBorder(borderColor, 5.0f)
-                    }
-                    photo.hierarchy.roundingParams = roundingParams
-
-                    listener.onClick(photo.isSelected)
+                    currentItem.isSelected = !currentItem.isSelected
+                    photo.hierarchy.roundingParams = getImageStyle(currentItem)
+                    listener.onClick(currentItem.isSelected)
                 }
             }
+        }
+
+        private fun getImageStyle(currentItem: Subscription): RoundingParams {
+            val roundingParams = RoundingParams()
+            roundingParams.roundAsCircle = true
+            if (currentItem.isSelected) {
+                roundingParams.setBorder(borderColor, 5.0f)
+            }
+            return roundingParams
         }
     }
 }
