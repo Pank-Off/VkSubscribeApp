@@ -54,6 +54,13 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             communitiesAdapter.attachListener(object : OnItemClickListener {
                 override fun onClick(isSelected: Boolean) {
+                    var count = Integer.parseInt(counter.text.toString())
+                    if (isSelected) {
+                        count++
+                    } else {
+                        count--
+                    }
+                    counter.text = count.toString()
 
                 }
             })
