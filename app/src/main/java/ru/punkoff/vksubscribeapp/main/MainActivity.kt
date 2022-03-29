@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.TranslateAnimation
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
@@ -64,8 +66,8 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         count--
                     }
+                    setAnimation(count, binding)
                     counter.text = count.toString()
-
                 }
             })
             communityList.layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -73,6 +75,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun setAnimation(count: Int, binding: ActivityMainBinding) {
+        with(binding) {
+            if (count == 0) {
+                unsubscribeBtn.startAnimation(
+                    TranslateAnimation(
+                        0f,
+                        0f,
+                        0f,
+                        (unsubscribeBtn.height + unsubscribeBtn.marginBottom).toFloat()
+                    ).apply {
+                        duration = 100
+                        fillAfter = true
+                    })
+            }
+            if (count == 1 && counter.text == "0") {
+                unsubscribeBtn.visibility = View.VISIBLE
+                unsubscribeBtn.startAnimation(
+                    TranslateAnimation(
+                        0f,
+                        0f,
+                        (unsubscribeBtn.height + unsubscribeBtn.marginBottom).toFloat(),
+                        0f
+                    ).apply {
+                        duration = 100
+                        fillAfter = true
+                    })
+            }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
