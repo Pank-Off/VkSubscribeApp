@@ -2,25 +2,37 @@ package ru.punkoff.vksubscribeapp.repository
 
 import android.util.Log
 import com.vk.dto.common.id.UserId
-import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.main.MainViewState
+import ru.punkoff.vksubscribeapp.model.Subscription
 
 class RepositoryImpl : Repository {
 
     private val networkRepository = NetworkRepositoryImpl()
-    override suspend fun getGroups(userId: UserId?): MainViewState {
-        val data = mutableListOf<GroupsGroupFull>()
+
+    private val subscriptions = mutableListOf<Subscription>()
+    override fun initVkApi(userId: UserId?) {
+        networkRepository.initVkApi(userId)
+    }
+
+    override suspend fun getGroups(): MainViewState {
+
+        val data = mutableListOf<Subscription>()
         var state: MainViewState = MainViewState.EMPTY
 
-        networkRepository.getGroups(userId).collect {
-            when (it) {
+        networkRepository.getGroups().collect { viewState ->
+            when (viewState) {
                 is NetworkState.Error -> {
-                    it.throwable.printStackTrace()
-                    state = MainViewState.ERROR(it.throwable)
+                    viewState.throwable.printStackTrace()
+                    state = MainViewState.ERROR(viewState.throwable)
                     return@collect
                 }
-                is NetworkState.Success -> data.addAll(it.group)
+                is NetworkState.Success -> {
+                    viewState.group.forEach {
+                        data.add(Subscription(it.id, it.name, it.photo100))
+                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
+                    }
+                }
             }
         }
 
@@ -31,5 +43,25 @@ class RepositoryImpl : Repository {
         Log.i(javaClass.simpleName, "DataSize: ${data.size}")
 
         return MainViewState.Success(data)
+    }
+
+    override fun addSubscription(subscription: Subscription) {
+        subscriptions.add(subscription)
+    }
+
+    override fun removeSubscription(subscription: Subscription) {
+        subscriptions.remove(subscription)
+    }
+
+    override suspend fun leaveGroups(): MainViewState {
+        networkRepository.leaveGroups(subscriptions)
+        subscriptions.clear()
+        return getGroups()
+    }
+
+    override suspend fun joinGroups(): MainViewState {
+        networkRepository.joinGroups(subscriptions)
+        subscriptions.clear()
+        return getGroups()
     }
 }
