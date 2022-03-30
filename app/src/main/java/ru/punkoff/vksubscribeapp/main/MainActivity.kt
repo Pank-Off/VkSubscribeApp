@@ -30,23 +30,28 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        val userId = intent.getParcelableExtra<UserId>(LoginActivity.EXTRA_USER_ID)
-        viewModel.initVkApi(userId)
-        viewModel.requestData()
-
-        collectFlow(viewModel.mainStateFlow) { viewState ->
-            when (viewState) {
-                MainViewState.EMPTY -> Unit
-                is MainViewState.ERROR -> {
-                    Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                    binding.progressBar.visibility = View.GONE
-                }
-                MainViewState.Loading -> binding.progressBar.visibility = View.VISIBLE
-                is MainViewState.Success -> {
-                    binding.counter.text = "0"
-                    setAnimation(0, binding)
-                    binding.progressBar.visibility = View.INVISIBLE
-                    communitiesAdapter.submitList(viewState.items)
+        if (savedInstanceState == null) {
+            val userId = intent.getParcelableExtra<UserId>(LoginActivity.EXTRA_USER_ID)
+            viewModel.initVkApi(userId)
+            viewModel.requestData()
+        }
+        with(binding) {
+            collectFlow(viewModel.mainStateFlow) { viewState ->
+                when (viewState) {
+                    MainViewState.EMPTY -> Unit
+                    is MainViewState.ERROR -> {
+                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        progressBar.visibility = View.GONE
+                    }
+                    MainViewState.Loading -> progressBar.visibility = View.VISIBLE
+                    is MainViewState.Success -> {
+                        setAnimation(0, binding)
+                        unsubscribeBtn.counter.text = "0"
+                        unsubscribeBtn.progressBarBtn.visibility = View.GONE
+                        unsubscribeBtn.counter.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                        communitiesAdapter.submitList(viewState.items)
+                    }
                 }
             }
         }
@@ -58,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             communitiesAdapter.attachListener(object : OnItemClickListener {
                 override fun onClick(subscription: Subscription) {
-                    var count = Integer.parseInt(counter.text.toString())
+                    var count = Integer.parseInt(unsubscribeBtn.counter.text.toString())
                     if (subscription.isSelected) {
                         viewModel.addSubscription(subscription)
                         count++
@@ -67,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                         count--
                     }
                     setAnimation(count, binding)
-                    counter.text = count.toString()
+                    unsubscribeBtn.counter.text = count.toString()
                 }
             })
             communityList.layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -76,26 +81,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setAnimation(count: Int, binding: ActivityMainBinding) {
-        with(binding) {
+        with(binding.unsubscribeBtn) {
             if (count == 0) {
-                unsubscribeBtn.startAnimation(
+                rootUnsubscribeBtn.startAnimation(
                     TranslateAnimation(
                         0f,
                         0f,
                         0f,
-                        (unsubscribeBtn.height + unsubscribeBtn.marginBottom).toFloat()
+                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat()
                     ).apply {
                         duration = 100
                         fillAfter = true
                     })
             }
             if (count == 1 && counter.text == "0") {
-                unsubscribeBtn.visibility = View.VISIBLE
-                unsubscribeBtn.startAnimation(
+                rootUnsubscribeBtn.visibility = View.VISIBLE
+                rootUnsubscribeBtn.startAnimation(
                     TranslateAnimation(
                         0f,
                         0f,
-                        (unsubscribeBtn.height + unsubscribeBtn.marginBottom).toFloat(),
+                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat(),
                         0f
                     ).apply {
                         duration = 100
@@ -105,9 +110,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setClickListeners(){
-        with(binding){
-            unsubscribeBtn.setOnClickListener {
+    private fun setClickListeners() {
+        with(binding.unsubscribeBtn) {
+            rootUnsubscribeBtn.setOnClickListener {
+                counter.visibility = View.INVISIBLE
+                progressBarBtn.visibility = View.VISIBLE
                 viewModel.leaveGroups()
             }
         }
