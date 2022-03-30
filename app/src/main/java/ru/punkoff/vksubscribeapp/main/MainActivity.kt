@@ -118,6 +118,16 @@ class MainActivity : AppCompatActivity() {
                 viewModel.leaveGroups()
             }
         }
+
+        binding.visibleBtn.setOnClickListener {
+            it.isSelected = !it.isSelected
+
+            if (it.isSelected) {
+
+            } else {
+
+            }
+        }
     }
 
     override fun onDestroy() {
