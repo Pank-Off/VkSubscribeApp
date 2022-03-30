@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
+import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
@@ -119,13 +120,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.visibleBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
+        with(binding) {
+            binding.visibleBtn.setOnClickListener {
+                it.isSelected = !it.isSelected
 
-            if (it.isSelected) {
-
-            } else {
-
+                if (it.isSelected) {
+                    unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
+                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                } else {
+                    unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
+                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                }
             }
         }
     }

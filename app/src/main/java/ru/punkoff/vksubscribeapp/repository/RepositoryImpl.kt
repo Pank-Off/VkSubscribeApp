@@ -9,7 +9,7 @@ import ru.punkoff.vksubscribeapp.model.Subscription
 class RepositoryImpl : Repository {
 
     private val networkRepository = NetworkRepositoryImpl()
-
+    private val localRepository = LocalRepositoryImpl()
     private val subscriptions = mutableListOf<Subscription>()
     override fun initVkApi(userId: UserId?) {
         networkRepository.initVkApi(userId)
@@ -55,6 +55,7 @@ class RepositoryImpl : Repository {
 
     override suspend fun leaveGroups(): MainViewState {
         networkRepository.leaveGroups(subscriptions)
+        localRepository.insert(subscriptions)
         subscriptions.clear()
         return getGroups()
     }

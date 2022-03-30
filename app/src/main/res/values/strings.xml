@@ -5,6 +5,7 @@
     <string name="unsubscribe_text">Отписаться от сообществ</string>
     <string name="main_description">Коснитесь и удерживайте, чтобы увидеть информацию о сообществе</string>
     <string name="unsubscribe">Отписаться</string>
+    <string name="subscribe">Подписаться</string>
 
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>
