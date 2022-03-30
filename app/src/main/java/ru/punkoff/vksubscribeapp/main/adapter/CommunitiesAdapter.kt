@@ -55,7 +55,7 @@ class CommunitiesAdapter :
                 photo.setOnClickListener {
                     currentItem.isSelected = !currentItem.isSelected
                     photo.hierarchy.roundingParams = getImageStyle(currentItem)
-                    listener.onClick(currentItem.isSelected)
+                    listener.onClick(currentItem)
                 }
             }
         }

@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userId = intent.getParcelableExtra<UserId>(LoginActivity.EXTRA_USER_ID)
-        viewModel.requestData(userId)
+        viewModel.initVkApi(userId)
+        viewModel.requestData()
 
         collectFlow(viewModel.mainStateFlow) { viewState ->
             when (viewState) {
@@ -42,28 +43,27 @@ class MainActivity : AppCompatActivity() {
                 }
                 MainViewState.Loading -> binding.progressBar.visibility = View.VISIBLE
                 is MainViewState.Success -> {
-                    val data = mutableListOf<Subscription>()
+                    binding.counter.text = "0"
+                    setAnimation(0, binding)
                     binding.progressBar.visibility = View.INVISIBLE
-                    viewState.items.forEach {
-                        data.add(Subscription(it.id, it.name, it.photo100))
-                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
-                    }
-
-                    communitiesAdapter.submitList(data)
+                    communitiesAdapter.submitList(viewState.items)
                 }
             }
         }
         setUpAdapter()
+        setClickListeners()
     }
 
     private fun setUpAdapter() {
         with(binding) {
             communitiesAdapter.attachListener(object : OnItemClickListener {
-                override fun onClick(isSelected: Boolean) {
+                override fun onClick(subscription: Subscription) {
                     var count = Integer.parseInt(counter.text.toString())
-                    if (isSelected) {
+                    if (subscription.isSelected) {
+                        viewModel.addSubscription(subscription)
                         count++
                     } else {
+                        viewModel.removeSubscription(subscription)
                         count--
                     }
                     setAnimation(count, binding)
@@ -101,6 +101,14 @@ class MainActivity : AppCompatActivity() {
                         duration = 100
                         fillAfter = true
                     })
+            }
+        }
+    }
+
+    private fun setClickListeners(){
+        with(binding){
+            unsubscribeBtn.setOnClickListener {
+                viewModel.leaveGroups()
             }
         }
     }
