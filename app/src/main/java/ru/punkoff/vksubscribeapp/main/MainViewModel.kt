@@ -49,4 +49,8 @@ class MainViewModel : BaseViewModel() {
             _mainStateFlow.value = repo.joinGroups()
         }
     }
+
+    fun showUnsubscribed() {
+        _mainStateFlow.value = repo.showUnsubscribed()
+    }
 }

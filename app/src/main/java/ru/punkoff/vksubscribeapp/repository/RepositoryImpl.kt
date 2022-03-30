@@ -15,6 +15,8 @@ class RepositoryImpl : Repository {
         networkRepository.initVkApi(userId)
     }
 
+    override fun showUnsubscribed(): MainViewState = MainViewState.Success(localRepository.getAll())
+
     override suspend fun getGroups(): MainViewState {
 
         val data = mutableListOf<Subscription>()

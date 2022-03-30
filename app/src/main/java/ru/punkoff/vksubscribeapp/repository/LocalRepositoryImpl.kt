@@ -10,4 +10,6 @@ class LocalRepositoryImpl : LocalRepository {
 
         Log.e(javaClass.simpleName, "DataBase: ${this.subscriptions}")
     }
+
+    override fun getAll(): List<Subscription> = subscriptions
 }

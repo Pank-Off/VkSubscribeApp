@@ -127,9 +127,11 @@ class MainActivity : AppCompatActivity() {
                 if (it.isSelected) {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                    viewModel.showUnsubscribed()
                 } else {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                    viewModel.requestData()
                 }
             }
         }
