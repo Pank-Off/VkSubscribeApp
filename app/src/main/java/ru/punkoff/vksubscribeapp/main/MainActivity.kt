@@ -39,28 +39,28 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
-                    MainViewState.EMPTY -> Log.e(javaClass.simpleName, "EmptyState")
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
                         progressBar.visibility = View.GONE
+                        emptyListTv.visibility = View.GONE
                     }
-                    MainViewState.Loading -> progressBar.visibility = View.VISIBLE
+                    MainViewState.Loading -> {
+                        progressBar.visibility = View.VISIBLE
+                        emptyListTv.visibility = View.GONE
+                    }
                     is MainViewState.Success -> {
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
+                        emptyListTv.visibility = View.GONE
                         setAnimation(0, binding)
                         unsubscribeBtn.counter.text = "0"
                         unsubscribeBtn.progressBarBtn.visibility = View.GONE
                         unsubscribeBtn.counter.visibility = View.VISIBLE
                         progressBar.visibility = View.INVISIBLE
-                        Log.e(
-                            javaClass.simpleName,
-                            "before CurrentList: ${communitiesAdapter.currentList}"
-                        )
+
+                        if (viewState.items.isEmpty()) {
+                            emptyListTv.visibility = View.VISIBLE
+                        }
                         communitiesAdapter.submitList(viewState.items)
-                        Log.e(
-                            javaClass.simpleName,
-                            "after CurrentList: ${communitiesAdapter.currentList}"
-                        )
                     }
                 }
             }
@@ -140,10 +140,12 @@ class MainActivity : AppCompatActivity() {
 
                 if (it.isSelected) {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
+                    unsubscribeTv.text = getString(R.string.subscribe_text)
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.showUnsubscribed()
                 } else {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
+                    unsubscribeTv.text = getString(R.string.unsubscribe_text)
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.requestData()
                 }

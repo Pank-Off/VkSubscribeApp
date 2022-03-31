@@ -20,31 +20,27 @@ class RepositoryImpl : Repository {
     override suspend fun getGroups(): MainViewState {
 
         val data = mutableListOf<Subscription>()
-        var state: MainViewState = MainViewState.EMPTY
+        var state: MainViewState = MainViewState.Loading
 
         networkRepository.getGroups().collect { viewState ->
-            when (viewState) {
+            state = when (viewState) {
                 is NetworkState.Error -> {
                     viewState.throwable.printStackTrace()
-                    state = MainViewState.ERROR(viewState.throwable)
-                    return@collect
+                    MainViewState.ERROR(viewState.throwable)
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
                         data.add(Subscription(it.id, it.name, it.photo100))
                         Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
                     }
+                    MainViewState.Success(data)
                 }
             }
         }
 
-        if (state is MainViewState.ERROR) {
-            return state
-        }
-
         Log.i(javaClass.simpleName, "DataSize: ${data.size}")
 
-        return MainViewState.Success(data)
+        return state
     }
 
     override fun addSubscription(subscription: Subscription) {
