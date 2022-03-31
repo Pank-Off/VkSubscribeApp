@@ -56,4 +56,8 @@ class MainViewModel : BaseViewModel() {
             _mainStateFlow.value = repo.showUnsubscribed()
         }
     }
+
+    fun clearUnsubscribedList() {
+        repo.clearList()
+    }
 }

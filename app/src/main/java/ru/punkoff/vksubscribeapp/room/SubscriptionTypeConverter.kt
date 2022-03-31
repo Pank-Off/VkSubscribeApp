@@ -6,15 +6,15 @@ import org.json.JSONObject
 
 class SubscriptionTypeConverter {
     @TypeConverter
-    fun subscriptionToJson(subscription: UserId?): String {
+    fun subscriptionToJson(userId: UserId?): String {
         val jsonObject = JSONObject()
-        jsonObject.put("value", subscription?.value)
+        jsonObject.put("value", userId?.value)
         return jsonObject.toString()
     }
 
     @TypeConverter
-    fun jsonToSubscription(subscription: String): UserId {
-        val jsonObject = JSONObject(subscription)
+    fun jsonToSubscription(userId: String): UserId {
+        val jsonObject = JSONObject(userId)
         val value = jsonObject.getLong("value")
         return UserId(value)
     }

@@ -13,4 +13,6 @@ interface Repository {
     fun removeSubscription(subscription: Subscription)
     fun initVkApi(userId: UserId?)
     fun showUnsubscribed(): MainViewState
+
+    fun clearList()
 }

@@ -135,6 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             binding.visibleBtn.setOnClickListener {
+                viewModel.clearUnsubscribedList()
                 it.isSelected = !it.isSelected
 
                 if (it.isSelected) {
