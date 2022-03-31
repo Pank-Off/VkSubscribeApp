@@ -13,12 +13,10 @@
         android:name=".app.VkApp"
         android:theme="@style/Theme.VkSubscribeApp">
         <activity
-            android:label="@string/communities"
             android:name=".main.MainActivity"
             android:exported="true" />
 
         <activity
-            android:label="@string/sign_in"
             android:name=".login.LoginActivity"
             android:exported="true">
             <intent-filter>

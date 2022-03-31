@@ -1,24 +1,23 @@
 package ru.punkoff.vksubscribeapp.repository
 
-import android.util.Log
-import kotlinx.coroutines.delay
+import ru.punkoff.vksubscribeapp.app.VkApp
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 
 class LocalRepositoryImpl : LocalRepository {
-    private val subscriptions = mutableListOf<Subscription>()
+    private val dao = VkApp.dao
     override fun insert(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             it.isSelected = false
+            dao.insert(it)
         }
-        this.subscriptions.addAll(subscriptions)
-        Log.e(javaClass.simpleName, "DataBase: ${this.subscriptions}")
     }
 
     override fun delete(subscriptions: List<Subscription>) {
-        this.subscriptions.removeAll(subscriptions)
-        Log.e(javaClass.simpleName, "DataBase: ${this.subscriptions}")
+        subscriptions.forEach {
+            dao.delete(it.userId)
+        }
     }
 
-    override fun getAll(): MainViewState = MainViewState.Success(subscriptions)
+    override fun getAll(): MainViewState = MainViewState.Success(dao.getUnsubscribed())
 }

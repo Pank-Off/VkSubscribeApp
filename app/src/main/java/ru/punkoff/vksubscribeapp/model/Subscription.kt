@@ -1,10 +1,16 @@
 package ru.punkoff.vksubscribeapp.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.vk.dto.common.id.UserId
+import java.io.Serializable
 
+@Entity(tableName = "table_unsubscribed")
 data class Subscription(
-    val id: UserId?,
+    val userId: UserId?,
     val name: String?,
     val imageUri: String?,
-    var isSelected: Boolean = false
-)
+    var isSelected: Boolean = false,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
+) : Serializable

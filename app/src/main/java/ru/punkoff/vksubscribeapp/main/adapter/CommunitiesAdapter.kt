@@ -13,7 +13,7 @@ import ru.punkoff.vksubscribeapp.model.Subscription
 
 val COMMUNITIES_COMPARATOR = object : DiffUtil.ItemCallback<Subscription>() {
     override fun areItemsTheSame(oldItem: Subscription, newItem: Subscription): Boolean =
-        oldItem.id == newItem.id
+        oldItem.userId == newItem.userId
 
     override fun areContentsTheSame(oldItem: Subscription, newItem: Subscription): Boolean =
         oldItem == newItem
