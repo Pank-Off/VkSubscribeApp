@@ -5,6 +5,7 @@ import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
+import java.util.*
 
 class RepositoryImpl : Repository {
 
@@ -15,7 +16,7 @@ class RepositoryImpl : Repository {
         networkRepository.initVkApi(userId)
     }
 
-    override fun showUnsubscribed(): MainViewState = MainViewState.Success(localRepository.getAll())
+    override fun showUnsubscribed(): MainViewState = localRepository.getAll()
 
     override suspend fun getGroups(): MainViewState {
 
@@ -64,7 +65,8 @@ class RepositoryImpl : Repository {
 
     override suspend fun joinGroups(): MainViewState {
         networkRepository.joinGroups(subscriptions)
+        localRepository.delete(subscriptions)
         subscriptions.clear()
-        return getGroups()
+        return showUnsubscribed()
     }
 }

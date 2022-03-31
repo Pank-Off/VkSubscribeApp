@@ -1,5 +1,6 @@
 package ru.punkoff.vksubscribeapp.main
 
+import android.util.Log
 import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +46,7 @@ class MainViewModel : BaseViewModel() {
 
     fun joinGroups() {
         cancelJob()
+
         viewModelCoroutineScope.launch(Dispatchers.IO) {
             _mainStateFlow.value = repo.joinGroups()
         }
