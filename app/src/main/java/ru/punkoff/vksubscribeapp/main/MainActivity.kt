@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
-                    MainViewState.EMPTY -> Log.e(javaClass.simpleName, "EmptyState")
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
                         progressBar.visibility = View.GONE
