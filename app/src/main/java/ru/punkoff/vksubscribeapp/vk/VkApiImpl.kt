@@ -15,13 +15,13 @@ class VkApiImpl(private val userId: UserId?) {
 
     fun leaveGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
-            VK.executeSync(GroupsService().groupsLeave(it.id!!))
+            VK.executeSync(GroupsService().groupsLeave(it.userId!!))
         }
     }
 
     fun joinGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
-            VK.executeSync(GroupsService().groupsJoin(it.id))
+            VK.executeSync(GroupsService().groupsJoin(it.userId))
         }
     }
 }

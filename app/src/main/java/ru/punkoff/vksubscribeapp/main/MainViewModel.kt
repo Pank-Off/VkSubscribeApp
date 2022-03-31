@@ -49,4 +49,11 @@ class MainViewModel : BaseViewModel() {
             _mainStateFlow.value = repo.joinGroups()
         }
     }
+
+    fun showUnsubscribed() {
+        cancelJob()
+        viewModelCoroutineScope.launch(Dispatchers.IO) {
+            _mainStateFlow.value = repo.showUnsubscribed()
+        }
+    }
 }

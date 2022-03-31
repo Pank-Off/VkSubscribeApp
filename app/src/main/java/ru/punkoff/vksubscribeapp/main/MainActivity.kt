@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
+import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
@@ -38,19 +39,28 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
-                    MainViewState.EMPTY -> Unit
+                    MainViewState.EMPTY -> Log.e(javaClass.simpleName, "EmptyState")
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
                         progressBar.visibility = View.GONE
                     }
                     MainViewState.Loading -> progressBar.visibility = View.VISIBLE
                     is MainViewState.Success -> {
+                        Log.e(javaClass.simpleName, "Success: ${viewState.items}")
                         setAnimation(0, binding)
                         unsubscribeBtn.counter.text = "0"
                         unsubscribeBtn.progressBarBtn.visibility = View.GONE
                         unsubscribeBtn.counter.visibility = View.VISIBLE
                         progressBar.visibility = View.INVISIBLE
+                        Log.e(
+                            javaClass.simpleName,
+                            "before CurrentList: ${communitiesAdapter.currentList}"
+                        )
                         communitiesAdapter.submitList(viewState.items)
+                        Log.e(
+                            javaClass.simpleName,
+                            "after CurrentList: ${communitiesAdapter.currentList}"
+                        )
                     }
                 }
             }
@@ -115,17 +125,27 @@ class MainActivity : AppCompatActivity() {
             rootUnsubscribeBtn.setOnClickListener {
                 counter.visibility = View.INVISIBLE
                 progressBarBtn.visibility = View.VISIBLE
-                viewModel.leaveGroups()
+                if (binding.visibleBtn.isSelected) {
+                    viewModel.joinGroups()
+                } else {
+                    viewModel.leaveGroups()
+                }
             }
         }
 
-        binding.visibleBtn.setOnClickListener {
-            it.isSelected = !it.isSelected
+        with(binding) {
+            binding.visibleBtn.setOnClickListener {
+                it.isSelected = !it.isSelected
 
-            if (it.isSelected) {
-
-            } else {
-
+                if (it.isSelected) {
+                    unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
+                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                    viewModel.showUnsubscribed()
+                } else {
+                    unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
+                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
+                    viewModel.requestData()
+                }
             }
         }
     }

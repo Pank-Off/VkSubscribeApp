@@ -5,15 +5,18 @@ import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
+import java.util.*
 
 class RepositoryImpl : Repository {
 
     private val networkRepository = NetworkRepositoryImpl()
-
+    private val localRepository = LocalRepositoryImpl()
     private val subscriptions = mutableListOf<Subscription>()
     override fun initVkApi(userId: UserId?) {
         networkRepository.initVkApi(userId)
     }
+
+    override fun showUnsubscribed(): MainViewState = localRepository.getAll()
 
     override suspend fun getGroups(): MainViewState {
 
@@ -55,13 +58,15 @@ class RepositoryImpl : Repository {
 
     override suspend fun leaveGroups(): MainViewState {
         networkRepository.leaveGroups(subscriptions)
+        localRepository.insert(subscriptions)
         subscriptions.clear()
         return getGroups()
     }
 
     override suspend fun joinGroups(): MainViewState {
         networkRepository.joinGroups(subscriptions)
+        localRepository.delete(subscriptions)
         subscriptions.clear()
-        return getGroups()
+        return showUnsubscribed()
     }
 }
