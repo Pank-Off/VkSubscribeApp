@@ -1,5 +1,6 @@
 package ru.punkoff.vksubscribeapp.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -127,7 +128,14 @@ class MainActivity : AppCompatActivity() {
                     unsubscribeBtn.counter.text = count.toString()
                 }
             })
-            communityList.layoutManager = GridLayoutManager(this@MainActivity, 3)
+
+            val layoutManager =
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    GridLayoutManager(this@MainActivity, 5)
+                } else {
+                    GridLayoutManager(this@MainActivity, 3)
+                }
+            communityList.layoutManager = layoutManager
             communityList.adapter = communitiesAdapter
         }
     }
