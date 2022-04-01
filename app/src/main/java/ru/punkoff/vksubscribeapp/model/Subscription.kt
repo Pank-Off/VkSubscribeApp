@@ -10,6 +10,8 @@ data class Subscription(
     val userId: UserId?,
     val name: String?,
     val imageUri: String?,
+    val membersCount: Int?,
+    val description: String?,
     var isSelected: Boolean = false,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

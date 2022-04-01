@@ -30,8 +30,16 @@ class RepositoryImpl : Repository {
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
-                        data.add(Subscription(it.id, it.name, it.photo100))
-                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
+                        data.add(
+                            Subscription(
+                                it.id,
+                                it.name,
+                                it.photo100,
+                                it.membersCount,
+                                it.description
+                            )
+                        )
+                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}, membersCountText - ${it.membersCountText}")
                     }
                     MainViewState.Success(data)
                 }

@@ -3,6 +3,7 @@ package ru.punkoff.vksubscribeapp.vk
 import com.vk.api.sdk.VK
 import com.vk.dto.common.id.UserId
 import com.vk.sdk.api.groups.GroupsService
+import com.vk.sdk.api.groups.dto.GroupsFields
 import kotlinx.coroutines.flow.flow
 import ru.punkoff.vksubscribeapp.model.Subscription
 
@@ -10,7 +11,8 @@ class VkApiImpl(private val userId: UserId?) {
 
     fun getGroups() = flow {
         val response = VK.executeSync(GroupsService().groupsGet(userId = userId))
-        emit(VK.executeSync(GroupsService().groupsGetById(response.items)))
+        emit(VK.executeSync(GroupsService().groupsGetById(response.items,
+            fields = listOf(GroupsFields.DESCRIPTION, GroupsFields.MEMBERS_COUNT))))
     }
 
     fun leaveGroups(subscriptions: List<Subscription>) {
