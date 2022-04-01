@@ -22,11 +22,11 @@ val COMMUNITIES_COMPARATOR = object : DiffUtil.ItemCallback<Subscription>() {
 class CommunitiesAdapter :
     ListAdapter<Subscription, CommunitiesAdapter.CommunitiesViewHolder>(COMMUNITIES_COMPARATOR) {
 
-    private lateinit var listener: OnItemClickListener
+    private lateinit var onItemClickListener: OnItemClickListener
     private var isEnabled = true
 
     fun attachListener(listener: OnItemClickListener) {
-        this.listener = listener
+        onItemClickListener = listener
     }
 
     fun setEnabled(isEnabled: Boolean) {
@@ -64,7 +64,12 @@ class CommunitiesAdapter :
                 photo.setOnClickListener {
                     currentItem.isSelected = !currentItem.isSelected
                     photo.hierarchy.roundingParams = getImageStyle(currentItem)
-                    listener.onClick(currentItem)
+                    onItemClickListener.onClick(currentItem)
+                }
+
+                photo.setOnLongClickListener {
+                    onItemClickListener.onLongClick(currentItem)
+                    return@setOnLongClickListener true
                 }
             }
         }

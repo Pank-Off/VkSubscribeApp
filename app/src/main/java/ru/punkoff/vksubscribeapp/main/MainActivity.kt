@@ -127,6 +127,16 @@ class MainActivity : AppCompatActivity() {
                     setAnimation(count, binding)
                     unsubscribeBtn.counter.text = count.toString()
                 }
+
+                override fun onLongClick(subscription: Subscription) {
+                    val bundle = Bundle()
+                    bundle.putSerializable(
+                        KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT,
+                        subscription
+                    )
+                    BottomSheetFragment.newInstance(bundle)
+                        .show(supportFragmentManager, "choose_fragment")
+                }
             })
 
             val layoutManager =
@@ -218,6 +228,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_VISIBLE_BUTTON = "EXTRA_VISIBLE_BUTTON"
         const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
         const val EXTRA_REQUEST_IS_STILL_IN_PROGRESS = "EXTRA_REQUEST_IS_STILL_IN_PROGRESS"
+        const val KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT = "KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT"
     }
 
     override fun onDestroy() {
