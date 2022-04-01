@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                         emptyListTv.visibility = View.GONE
                     }
                     is MainViewState.Success -> {
+                        setEnabled(true)
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
                         emptyListTv.visibility = View.GONE
                         val count = viewModel.getSubscriptionsSize()
@@ -78,23 +79,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(EXTRA_TITLE_INFO_TEXT, binding.unsubscribeTv.text.toString())
-        outState.putString(
-            EXTRA_BUTTON_TEXT,
-            binding.unsubscribeBtn.unsubscribeTvBtn.text.toString()
-        )
-        outState.putBoolean(EXTRA_VISIBLE_BUTTON, binding.visibleBtn.isSelected)
-        outState.putBundle(EXTRA_MOTION_LAYOUT_STATE, binding.container.transitionState)
+        with(binding) {
+            outState.putString(EXTRA_TITLE_INFO_TEXT, unsubscribeTv.text.toString())
+            outState.putString(
+                EXTRA_BUTTON_TEXT,
+                unsubscribeBtn.unsubscribeTvBtn.text.toString()
+            )
+            outState.putBoolean(EXTRA_VISIBLE_BUTTON, visibleBtn.isSelected)
+            outState.putBundle(EXTRA_MOTION_LAYOUT_STATE, container.transitionState)
+            outState.putBoolean(
+                EXTRA_REQUEST_IS_STILL_IN_PROGRESS,
+                unsubscribeBtn.rootUnsubscribeBtn.isEnabled
+            )
+        }
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        binding.unsubscribeTv.text = savedInstanceState.getString(EXTRA_TITLE_INFO_TEXT)
-        binding.unsubscribeBtn.unsubscribeTvBtn.text =
-            savedInstanceState.getString(EXTRA_BUTTON_TEXT)
-        binding.visibleBtn.isSelected = savedInstanceState.getBoolean(EXTRA_VISIBLE_BUTTON)
-        binding.container.transitionState = savedInstanceState.getBundle(EXTRA_MOTION_LAYOUT_STATE)
+        with(binding) {
+            unsubscribeTv.text = savedInstanceState.getString(EXTRA_TITLE_INFO_TEXT)
+            unsubscribeBtn.unsubscribeTvBtn.text =
+                savedInstanceState.getString(EXTRA_BUTTON_TEXT)
+            visibleBtn.isSelected = savedInstanceState.getBoolean(EXTRA_VISIBLE_BUTTON)
+            container.transitionState =
+                savedInstanceState.getBundle(EXTRA_MOTION_LAYOUT_STATE)
+            if (!savedInstanceState.getBoolean(EXTRA_REQUEST_IS_STILL_IN_PROGRESS)) {
+                unsubscribeBtn.counter.visibility = View.GONE
+                unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
+                setEnabled(false)
+            }
+        }
     }
 
     private fun setUpAdapter() {
@@ -152,6 +167,7 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding.unsubscribeBtn) {
             rootUnsubscribeBtn.setOnClickListener {
+                setEnabled(false)
                 counter.visibility = View.INVISIBLE
                 progressBarBtn.visibility = View.VISIBLE
                 if (binding.visibleBtn.isSelected) {
@@ -182,11 +198,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setEnabled(isEnabled: Boolean) {
+        binding.unsubscribeBtn.rootUnsubscribeBtn.isEnabled = isEnabled
+        binding.visibleBtn.isEnabled = isEnabled
+        communitiesAdapter.setEnabled(isEnabled)
+    }
+
     companion object {
         const val EXTRA_BUTTON_TEXT = "EXTRA_BUTTON_TEXT"
         const val EXTRA_TITLE_INFO_TEXT = "EXTRA_TITLE_INFO_TEXT"
         const val EXTRA_VISIBLE_BUTTON = "EXTRA_VISIBLE_BUTTON"
         const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
+        const val EXTRA_REQUEST_IS_STILL_IN_PROGRESS = "EXTRA_REQUEST_IS_STILL_IN_PROGRESS"
     }
 
     override fun onDestroy() {

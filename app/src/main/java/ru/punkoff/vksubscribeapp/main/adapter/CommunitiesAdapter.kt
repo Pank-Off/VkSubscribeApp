@@ -23,8 +23,15 @@ class CommunitiesAdapter :
     ListAdapter<Subscription, CommunitiesAdapter.CommunitiesViewHolder>(COMMUNITIES_COMPARATOR) {
 
     private lateinit var listener: OnItemClickListener
+    private var isEnabled = true
+
     fun attachListener(listener: OnItemClickListener) {
         this.listener = listener
+    }
+
+    fun setEnabled(isEnabled: Boolean) {
+        this.isEnabled = isEnabled
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunitiesViewHolder {
@@ -46,6 +53,8 @@ class CommunitiesAdapter :
         private val borderColor = binding.root.resources.getColor(R.color.border_item_color, null)
         fun bind(currentItem: Subscription) {
             with(binding) {
+                root.isEnabled = isEnabled
+                photo.isEnabled = isEnabled
                 name.text = currentItem.name
                 photo.setImageURI(currentItem.imageUri)
 
