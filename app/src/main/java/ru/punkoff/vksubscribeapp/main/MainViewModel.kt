@@ -60,4 +60,6 @@ class MainViewModel : BaseViewModel() {
     fun clearUnsubscribedList() {
         repo.clearList()
     }
+
+    fun getSubscriptionsSize(): Int = repo.getSubscriptionsSize()
 }

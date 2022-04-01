@@ -36,27 +36,35 @@ class MainActivity : AppCompatActivity() {
             viewModel.initVkApi(userId)
             viewModel.requestData()
         }
+
+        if (viewModel.getSubscriptionsSize() == 0) {
+            binding.unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+        }
+
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.GONE
                         emptyListTv.visibility = View.GONE
                     }
                     MainViewState.Loading -> {
+                        setAnimation(0, binding)
+                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.VISIBLE
                         emptyListTv.visibility = View.GONE
                     }
                     is MainViewState.Success -> {
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
                         emptyListTv.visibility = View.GONE
-                        setAnimation(0, binding)
-                        unsubscribeBtn.counter.text = "0"
+                        val count = viewModel.getSubscriptionsSize()
+                        setAnimation(count, binding)
+                        unsubscribeBtn.counter.text = count.toString()
                         unsubscribeBtn.progressBarBtn.visibility = View.GONE
                         unsubscribeBtn.counter.visibility = View.VISIBLE
                         progressBar.visibility = View.INVISIBLE
-
                         if (viewState.items.isEmpty()) {
                             emptyListTv.visibility = View.VISIBLE
                         }
@@ -69,18 +77,37 @@ class MainActivity : AppCompatActivity() {
         setClickListeners()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(EXTRA_TITLE_INFO_TEXT, binding.unsubscribeTv.text.toString())
+        outState.putString(
+            EXTRA_BUTTON_TEXT,
+            binding.unsubscribeBtn.unsubscribeTvBtn.text.toString()
+        )
+        outState.putBoolean(EXTRA_VISIBLE_BUTTON, binding.visibleBtn.isSelected)
+        outState.putBundle(EXTRA_MOTION_LAYOUT_STATE, binding.container.transitionState)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        binding.unsubscribeTv.text = savedInstanceState.getString(EXTRA_TITLE_INFO_TEXT)
+        binding.unsubscribeBtn.unsubscribeTvBtn.text =
+            savedInstanceState.getString(EXTRA_BUTTON_TEXT)
+        binding.visibleBtn.isSelected = savedInstanceState.getBoolean(EXTRA_VISIBLE_BUTTON)
+        binding.container.transitionState = savedInstanceState.getBundle(EXTRA_MOTION_LAYOUT_STATE)
+    }
+
     private fun setUpAdapter() {
         with(binding) {
             communitiesAdapter.attachListener(object : OnItemClickListener {
                 override fun onClick(subscription: Subscription) {
-                    var count = Integer.parseInt(unsubscribeBtn.counter.text.toString())
                     if (subscription.isSelected) {
                         viewModel.addSubscription(subscription)
-                        count++
                     } else {
                         viewModel.removeSubscription(subscription)
-                        count--
                     }
+
+                    val count = viewModel.getSubscriptionsSize()
                     setAnimation(count, binding)
                     unsubscribeBtn.counter.text = count.toString()
                 }
@@ -93,6 +120,7 @@ class MainActivity : AppCompatActivity() {
     fun setAnimation(count: Int, binding: ActivityMainBinding) {
         with(binding.unsubscribeBtn) {
             if (count == 0) {
+                rootUnsubscribeBtn.visibility = View.VISIBLE
                 rootUnsubscribeBtn.startAnimation(
                     TranslateAnimation(
                         0f,
@@ -103,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                         duration = 100
                         fillAfter = true
                     })
+                rootUnsubscribeBtn.visibility = View.GONE
             }
             if (count == 1 && counter.text == "0") {
                 rootUnsubscribeBtn.visibility = View.VISIBLE
@@ -151,6 +180,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_BUTTON_TEXT = "EXTRA_BUTTON_TEXT"
+        const val EXTRA_TITLE_INFO_TEXT = "EXTRA_TITLE_INFO_TEXT"
+        const val EXTRA_VISIBLE_BUTTON = "EXTRA_VISIBLE_BUTTON"
+        const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
     }
 
     override fun onDestroy() {

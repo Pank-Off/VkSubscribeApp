@@ -66,4 +66,6 @@ class RepositoryImpl : Repository {
     }
 
     override fun clearList() = subscriptions.clear()
+
+    override fun getSubscriptionsSize() = subscriptions.size
 }

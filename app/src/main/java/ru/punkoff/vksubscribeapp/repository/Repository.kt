@@ -15,4 +15,5 @@ interface Repository {
     fun showUnsubscribed(): MainViewState
 
     fun clearList()
+    fun getSubscriptionsSize(): Int
 }
