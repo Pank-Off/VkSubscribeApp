@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             binding.unsubscribeBtn.unsubscribeTvBtn.text.toString()
         )
         outState.putBoolean(EXTRA_VISIBLE_BUTTON, binding.visibleBtn.isSelected)
+        outState.putBundle(EXTRA_MOTION_LAYOUT_STATE, binding.container.transitionState)
         super.onSaveInstanceState(outState)
     }
 
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         binding.unsubscribeBtn.unsubscribeTvBtn.text =
             savedInstanceState.getString(EXTRA_BUTTON_TEXT)
         binding.visibleBtn.isSelected = savedInstanceState.getBoolean(EXTRA_VISIBLE_BUTTON)
+        binding.container.transitionState = savedInstanceState.getBundle(EXTRA_MOTION_LAYOUT_STATE)
     }
 
     private fun setUpAdapter() {
@@ -184,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_BUTTON_TEXT = "EXTRA_BUTTON_TEXT"
         const val EXTRA_TITLE_INFO_TEXT = "EXTRA_TITLE_INFO_TEXT"
         const val EXTRA_VISIBLE_BUTTON = "EXTRA_VISIBLE_BUTTON"
+        const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
     }
 
     override fun onDestroy() {
