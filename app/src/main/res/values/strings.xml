@@ -11,5 +11,6 @@
     <string name="open">Открыть</string>
 
     <string name="members_count">%1$s подписчиков</string>
+    <string name="last_post">Последняя запись %1$s</string>
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>

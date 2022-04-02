@@ -1,5 +1,9 @@
 package ru.punkoff.vksubscribeapp.utils
 
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 /**
  * Parser for numbers
@@ -24,4 +28,11 @@ fun parseCount(count: Int?): String {
         }
     }
     return res
+}
+
+fun parseIntToDate(time: Long?): String {
+    val locale = Locale("ru")
+    val simpleDateFormat = SimpleDateFormat("d MMMM", locale)
+    Log.e("parseToDate", time.toString())
+    return simpleDateFormat.format(time)
 }

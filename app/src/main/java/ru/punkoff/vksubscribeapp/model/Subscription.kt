@@ -7,7 +7,7 @@ import java.io.Serializable
 
 @Entity(tableName = "table_unsubscribed")
 data class Subscription(
-    val userId: UserId?,
+    val groupId: UserId?,
     val name: String?,
     val imageUri: String?,
     val membersCount: Int?,

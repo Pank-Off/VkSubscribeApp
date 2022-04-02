@@ -12,6 +12,7 @@ import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.R
+import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetFragment
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter

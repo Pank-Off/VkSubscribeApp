@@ -15,7 +15,7 @@ class LocalRepositoryImpl : LocalRepository {
 
     override fun delete(subscriptions: List<Subscription>) {
         subscriptions.forEach {
-            dao.delete(it.userId)
+            dao.delete(it.groupId)
         }
     }
 

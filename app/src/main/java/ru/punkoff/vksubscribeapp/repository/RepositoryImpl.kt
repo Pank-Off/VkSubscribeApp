@@ -3,6 +3,7 @@ package ru.punkoff.vksubscribeapp.repository
 import android.util.Log
 import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.flow.collect
+import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 
@@ -30,16 +31,21 @@ class RepositoryImpl : Repository {
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
+                        val groupId = UserId(-it.id.value)
                         data.add(
                             Subscription(
-                                it.id,
+                                groupId,
                                 it.name,
                                 it.photo100,
                                 it.membersCount,
                                 it.description
                             )
                         )
-                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}, membersCountText - ${it.membersCountText}")
+
+                        Log.i(
+                            javaClass.simpleName,
+                            "name - ${it.name}, photo - ${it.photo200}, membersCountText - ${it.membersCountText}"
+                        )
                     }
                     MainViewState.Success(data)
                 }
@@ -72,6 +78,9 @@ class RepositoryImpl : Repository {
         clearList()
         return showUnsubscribed()
     }
+
+    override fun getLastPostDate(groupId: UserId?): BottomSheetViewState =
+        networkRepository.getLastPost(groupId)
 
     override fun clearList() = subscriptions.clear()
 

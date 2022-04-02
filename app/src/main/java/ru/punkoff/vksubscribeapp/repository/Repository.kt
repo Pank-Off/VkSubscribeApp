@@ -1,6 +1,7 @@
 package ru.punkoff.vksubscribeapp.repository
 
 import com.vk.dto.common.id.UserId
+import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 
@@ -16,4 +17,5 @@ interface Repository {
 
     fun clearList()
     fun getSubscriptionsSize(): Int
+    fun getLastPostDate(groupId: UserId?): BottomSheetViewState
 }
