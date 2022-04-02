@@ -17,11 +17,11 @@ class BottomSheetViewModel : BaseViewModel() {
         repo.initVkApi(null)
     }
 
-    fun getLastPostTime(groupId: Long) {
+    fun getSubscriptionInfo(groupId: Long) {
         cancelJob()
         _bottomSheetStateFlow.value = BottomSheetViewState.Loading
         viewModelCoroutineScope.launch(Dispatchers.IO) {
-            _bottomSheetStateFlow.value = repo.getLastPostDate(groupId)
+            _bottomSheetStateFlow.value = repo.getSubscriptionInfo(groupId)
         }
     }
 }

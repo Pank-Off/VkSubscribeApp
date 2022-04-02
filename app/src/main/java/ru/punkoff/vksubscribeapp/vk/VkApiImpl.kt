@@ -11,12 +11,7 @@ import ru.punkoff.vksubscribeapp.model.Subscription
 class VkApiImpl(private val userId: UserId?) {
 
     fun getGroups() = flow {
-        val response = VK.executeSync(
-            GroupsService().groupsGetExtended(
-                userId = userId,
-                fields = listOf(GroupsFields.DESCRIPTION, GroupsFields.MEMBERS_COUNT)
-            )
-        )
+        val response = VK.executeSync(GroupsService().groupsGetExtended(userId = userId))
         emit(response)
     }
 
@@ -34,4 +29,12 @@ class VkApiImpl(private val userId: UserId?) {
 
     fun getLastPost(groupId: UserId?) =
         VK.executeSync(WallService().wallGetExtended(groupId, count = 2))
+
+    fun getGroupById(groupId: UserId) =
+        VK.executeSync(
+            GroupsService().groupsGetById(
+                listOf(groupId),
+                fields = listOf(GroupsFields.DESCRIPTION, GroupsFields.MEMBERS_COUNT)
+            )
+        )
 }

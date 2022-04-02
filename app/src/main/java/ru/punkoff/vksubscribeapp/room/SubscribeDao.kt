@@ -12,7 +12,7 @@ interface SubscribeDao {
     @Insert(onConflict = REPLACE)
     fun insert(subscription: Subscription)
 
-    @Query("DELETE FROM table_unsubscribed WHERE groupId = :userId")
+    @Query("DELETE FROM table_unsubscribed WHERE userId = :userId")
     fun delete(userId: UserId?)
 
     @Query("SELECT * FROM table_unsubscribed")

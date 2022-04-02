@@ -2,10 +2,10 @@ package ru.punkoff.vksubscribeapp.repository
 
 import android.util.Log
 import com.vk.dto.common.id.UserId
+import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.vk.VkApiImpl
 
@@ -35,13 +35,16 @@ class NetworkRepositoryImpl : NetworkRepository {
         vkApi.joinGroups(subscriptions)
     }
 
-    override fun getLastPost(groupId: Long): BottomSheetViewState {
+    override fun getLastPost(groupId: Long): Long {
         val id = UserId(-groupId)
         val lastPost = vkApi.getLastPost(id)
         Log.e(javaClass.simpleName, "LastPost: ${lastPost.items[0].date}")
         val time: Long = lastPost.items[0].date!!.toLong()
         val correctTime = time * 1000
         Log.e(javaClass.simpleName, correctTime.toString())
-        return BottomSheetViewState.Success(correctTime)
+        return correctTime
     }
+
+    override fun getGroupById(groupId: Long): List<GroupsGroupFull> =
+        vkApi.getGroupById(UserId(groupId))
 }

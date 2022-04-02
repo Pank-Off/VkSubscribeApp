@@ -17,5 +17,5 @@ interface Repository {
 
     fun clearList()
     fun getSubscriptionsSize(): Int
-    fun getLastPostDate(groupId: Long): BottomSheetViewState
+    fun getSubscriptionInfo(groupId: Long): BottomSheetViewState
 }

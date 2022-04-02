@@ -11,6 +11,7 @@ import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.BottomSheetLayoutBinding
 import ru.punkoff.vksubscribeapp.main.MainActivity
 import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.parseCount
 import ru.punkoff.vksubscribeapp.utils.parseIntToDate
@@ -36,7 +37,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val subscription =
             arguments?.get(MainActivity.KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT) as Subscription
-        viewModel.getLastPostTime(subscription.groupId!!.value)
+        viewModel.getSubscriptionInfo(subscription.groupId!!.value)
         collectFlow(viewModel.bottomSheetStateFlow) {
             when (it) {
                 is BottomSheetViewState.ERROR -> TODO()
@@ -46,22 +47,22 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
                 }
                 is BottomSheetViewState.Success -> {
                     Log.e(javaClass.simpleName, "Success!")
-                    showData(subscription, it.lastPostTime)
+                    showData(subscription, it.info)
                 }
             }
         }
     }
 
-    private fun showData(subscription: Subscription, state: Long?) {
+    private fun showData(subscription: Subscription, subscriptionInfo: SubscriptionInfo) {
 
-        val count = parseCount(subscription.membersCount)
-        val date = parseIntToDate(state)
+        val count = parseCount(subscriptionInfo.membersCount)
+        val date = parseIntToDate(subscriptionInfo.lastPostDate)
         with(binding) {
             rootUnsubscribeBtn.isEnabled = true
             progressBar.visibility = View.GONE
             title.text = subscription.name
             membersCount.text = getString(R.string.members_count, count)
-            description.text = subscription.description
+            description.text = subscriptionInfo.description
             lastPost.text = getString(R.string.last_post, date)
             dismissBtn.setOnClickListener {
                 dismiss()

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
 
 class RepositoryImpl : Repository {
 
@@ -36,8 +37,6 @@ class RepositoryImpl : Repository {
                                 it.id,
                                 it.name,
                                 it.photo100,
-                                it.membersCount,
-                                it.description
                             )
                         )
 
@@ -78,8 +77,18 @@ class RepositoryImpl : Repository {
         return showUnsubscribed()
     }
 
-    override fun getLastPostDate(groupId: Long): BottomSheetViewState =
-        networkRepository.getLastPost(groupId)
+    override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState {
+        val time = networkRepository.getLastPost(groupId)
+        val group = networkRepository.getGroupById(groupId)[0]
+
+        return BottomSheetViewState.Success(
+            SubscriptionInfo(
+                group.membersCount,
+                group.description,
+                time
+            )
+        )
+    }
 
     override fun clearList() = subscriptions.clear()
 
