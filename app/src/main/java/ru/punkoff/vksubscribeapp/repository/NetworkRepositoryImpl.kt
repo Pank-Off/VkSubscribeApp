@@ -35,8 +35,9 @@ class NetworkRepositoryImpl : NetworkRepository {
         vkApi.joinGroups(subscriptions)
     }
 
-    override fun getLastPost(groupId: UserId?): BottomSheetViewState {
-        val lastPost = vkApi.getLastPost(groupId)
+    override fun getLastPost(groupId: Long): BottomSheetViewState {
+        val id = UserId(-groupId)
+        val lastPost = vkApi.getLastPost(id)
         Log.e(javaClass.simpleName, "LastPost: ${lastPost.items[0].date}")
         val time: Long = lastPost.items[0].date!!.toLong()
         val correctTime = time * 1000

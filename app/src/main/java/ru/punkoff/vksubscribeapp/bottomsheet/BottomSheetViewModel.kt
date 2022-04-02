@@ -1,6 +1,5 @@
 package ru.punkoff.vksubscribeapp.bottomsheet
 
-import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +17,7 @@ class BottomSheetViewModel : BaseViewModel() {
         repo.initVkApi(null)
     }
 
-    fun getLastPostTime(groupId: UserId?) {
+    fun getLastPostTime(groupId: Long) {
         cancelJob()
         _bottomSheetStateFlow.value = BottomSheetViewState.Loading
         viewModelCoroutineScope.launch(Dispatchers.IO) {

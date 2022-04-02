@@ -11,5 +11,5 @@ interface NetworkRepository {
     fun leaveGroups(subscriptions: List<Subscription>)
     fun joinGroups(subscriptions: List<Subscription>)
 
-    fun getLastPost(groupId: UserId?): BottomSheetViewState
+    fun getLastPost(groupId: Long): BottomSheetViewState
 }

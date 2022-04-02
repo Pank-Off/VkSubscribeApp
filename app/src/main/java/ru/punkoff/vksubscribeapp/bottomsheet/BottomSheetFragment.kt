@@ -36,7 +36,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val subscription =
             arguments?.get(MainActivity.KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT) as Subscription
-        viewModel.getLastPostTime(subscription.groupId)
+        viewModel.getLastPostTime(subscription.groupId!!.value)
         collectFlow(viewModel.bottomSheetStateFlow) {
             when (it) {
                 is BottomSheetViewState.ERROR -> TODO()

@@ -31,10 +31,9 @@ class RepositoryImpl : Repository {
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
-                        val groupId = UserId(-it.id.value)
                         data.add(
                             Subscription(
-                                groupId,
+                                it.id,
                                 it.name,
                                 it.photo100,
                                 it.membersCount,
@@ -79,7 +78,7 @@ class RepositoryImpl : Repository {
         return showUnsubscribed()
     }
 
-    override fun getLastPostDate(groupId: UserId?): BottomSheetViewState =
+    override fun getLastPostDate(groupId: Long): BottomSheetViewState =
         networkRepository.getLastPost(groupId)
 
     override fun clearList() = subscriptions.clear()
