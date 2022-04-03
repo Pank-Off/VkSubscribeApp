@@ -1,11 +1,13 @@
 package ru.punkoff.vksubscribeapp.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.vk.dto.common.id.UserId
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "table_unsubscribed")
 data class Subscription(
     @ColumnInfo(name = "userId")
@@ -15,4 +17,4 @@ data class Subscription(
     var isSelected: Boolean = false,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-) : Serializable
+) : Parcelable

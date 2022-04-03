@@ -7,6 +7,7 @@ import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
+import ru.punkoff.vksubscribeapp.utils.Constants
 
 class RepositoryImpl : Repository {
 
@@ -80,13 +81,13 @@ class RepositoryImpl : Repository {
     override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState {
         val time = networkRepository.getLastPost(groupId)
         val group = networkRepository.getGroupById(groupId)[0]
-
+        val url = "${Constants.VK_BASE_URL}${group.screenName}"
         return BottomSheetViewState.Success(
             SubscriptionInfo(
                 group.membersCount,
                 group.description,
-                time
-            )
+                time,
+                url)
         )
     }
 

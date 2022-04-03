@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.TranslateAnimation
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
@@ -48,6 +49,11 @@ class MainActivity : AppCompatActivity() {
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        Toast.makeText(
+                            this@MainActivity,
+                            getString(R.string.something_went_wrong_text),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.GONE
                         emptyListTv.visibility = View.GONE
@@ -131,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onLongClick(subscription: Subscription) {
                     val bundle = Bundle()
-                    bundle.putSerializable(
+                    bundle.putParcelable(
                         KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT,
                         subscription
                     )

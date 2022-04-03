@@ -71,7 +71,7 @@
         tools:text="Последняя запись 8 февраля" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/root_unsubscribe_btn"
+        android:id="@+id/open_web_page_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
