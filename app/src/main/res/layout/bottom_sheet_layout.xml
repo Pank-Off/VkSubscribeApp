@@ -7,14 +7,15 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="start"
         android:layout_margin="16dp"
-        android:gravity="center"
+        android:gravity="start"
         android:textColor="@color/black"
         android:textSize="17sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/dismiss_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Happy Santa" />
@@ -30,7 +31,7 @@
 
     <TextView
         android:id="@+id/members_count"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
@@ -38,15 +39,17 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_followers_outline_20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="188,2K ПОДПИСЧИКОВ · 119 ДРУЗЕЙ" />
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"
         android:drawablePadding="12dp"
         android:textColor="@color/black"
@@ -58,12 +61,13 @@
 
     <TextView
         android:id="@+id/last_post"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:drawablePadding="12dp"
         android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_newsfeed_outline_20"
         app:layout_constraintStart_toStartOf="parent"
