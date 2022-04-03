@@ -11,11 +11,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
-import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetFragment
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
-import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
 import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
@@ -35,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            val userId = intent.getParcelableExtra<UserId>(LoginActivity.EXTRA_USER_ID)
-            viewModel.initVkApi(userId)
             viewModel.requestData()
         }
 

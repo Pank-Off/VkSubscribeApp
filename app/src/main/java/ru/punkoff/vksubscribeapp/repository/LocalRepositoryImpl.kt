@@ -3,9 +3,10 @@ package ru.punkoff.vksubscribeapp.repository
 import ru.punkoff.vksubscribeapp.app.VkApp
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.room.SubscribeDao
 
-class LocalRepositoryImpl : LocalRepository {
-    private val dao = VkApp.dao
+class LocalRepositoryImpl(private val dao: SubscribeDao = VkApp.dao) : LocalRepository {
+
     override fun insert(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             it.isSelected = false

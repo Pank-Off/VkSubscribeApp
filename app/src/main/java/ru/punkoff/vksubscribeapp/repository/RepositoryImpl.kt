@@ -1,22 +1,20 @@
 package ru.punkoff.vksubscribeapp.repository
 
 import android.util.Log
-import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
+import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
 import ru.punkoff.vksubscribeapp.utils.Constants
 
-class RepositoryImpl : Repository {
+class RepositoryImpl(
+    private val networkRepository: NetworkRepository = ServiceProvider.networkRepository,
+    private val localRepository: LocalRepository = ServiceProvider.localRepository
+) : Repository {
 
-    private val networkRepository = NetworkRepositoryImpl()
-    private val localRepository = LocalRepositoryImpl()
     private val subscriptions = mutableListOf<Subscription>()
-    override fun initVkApi(userId: UserId?) {
-        networkRepository.initVkApi(userId)
-    }
 
     override fun showUnsubscribed(): MainViewState = localRepository.getAll()
 
@@ -87,7 +85,8 @@ class RepositoryImpl : Repository {
                 group.membersCount,
                 group.description,
                 time,
-                url)
+                url
+            )
         )
     }
 

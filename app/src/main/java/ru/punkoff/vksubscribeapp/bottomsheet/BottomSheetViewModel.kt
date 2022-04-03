@@ -5,17 +5,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.punkoff.vksubscribeapp.base.BaseViewModel
-import ru.punkoff.vksubscribeapp.repository.RepositoryImpl
+import ru.punkoff.vksubscribeapp.repository.Repository
+import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
 
-class BottomSheetViewModel : BaseViewModel() {
-    private val repo = RepositoryImpl()
+class BottomSheetViewModel(private val repo: Repository = ServiceProvider.repository) :
+    BaseViewModel() {
+
     private val _bottomSheetStateFlow =
         MutableStateFlow<BottomSheetViewState>(BottomSheetViewState.Loading)
     val bottomSheetStateFlow = _bottomSheetStateFlow.asStateFlow()
-
-    init {
-        repo.initVkApi(null)
-    }
 
     fun getSubscriptionInfo(groupId: Long) {
         cancelJob()

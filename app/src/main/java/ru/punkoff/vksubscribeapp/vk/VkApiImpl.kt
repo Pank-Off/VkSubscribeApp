@@ -8,7 +8,7 @@ import com.vk.sdk.api.wall.WallService
 import kotlinx.coroutines.flow.flow
 import ru.punkoff.vksubscribeapp.model.Subscription
 
-class VkApiImpl(private val userId: UserId?) {
+class VkApiImpl(private val userId: UserId? = VK.getUserId()) {
 
     fun getGroups() = flow {
         val response = VK.executeSync(GroupsService().groupsGetExtended(userId = userId))
