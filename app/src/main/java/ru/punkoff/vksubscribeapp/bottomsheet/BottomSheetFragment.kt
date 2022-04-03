@@ -1,6 +1,7 @@
 package ru.punkoff.vksubscribeapp.bottomsheet
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,13 +18,11 @@ import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.parseCount
 import ru.punkoff.vksubscribeapp.utils.parseIntToDate
-import ru.punkoff.vksubscribeapp.web.WebActivity
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetLayoutBinding? = null
     private val binding: BottomSheetLayoutBinding get() = _binding!!
-
 
     private val viewModel: BottomSheetViewModel by viewModels()
 
@@ -77,8 +76,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             lastPost.text = getString(R.string.last_post, date)
 
             openWebPageBtn.setOnClickListener {
-                val intent = Intent(context, WebActivity::class.java)
-                intent.putExtra(EXTRA_OPEN_WEB_ACTIVITY, subscriptionInfo.url)
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(subscriptionInfo.url))
                 startActivity(intent)
             }
             dismissBtn.setOnClickListener {
@@ -91,7 +89,5 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         fun newInstance(bundle: Bundle) = BottomSheetFragment().apply {
             arguments = bundle
         }
-
-        const val EXTRA_OPEN_WEB_ACTIVITY = "EXTRA_OPEN_WEB_ACTIVITY"
     }
 }
