@@ -4,4 +4,5 @@ import ru.punkoff.vksubscribeapp.model.Subscription
 
 interface OnItemClickListener {
     fun onClick(subscription: Subscription)
+    fun onLongClick(subscription: Subscription)
 }

@@ -1,19 +1,20 @@
 package ru.punkoff.vksubscribeapp.repository
 
 import android.util.Log
-import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.flow.collect
+import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
+import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
+import ru.punkoff.vksubscribeapp.utils.Constants
 
-class RepositoryImpl : Repository {
+class RepositoryImpl(
+    private val networkRepository: NetworkRepository = ServiceProvider.networkRepository,
+    private val localRepository: LocalRepository = ServiceProvider.localRepository
+) : Repository {
 
-    private val networkRepository = NetworkRepositoryImpl()
-    private val localRepository = LocalRepositoryImpl()
     private val subscriptions = mutableListOf<Subscription>()
-    override fun initVkApi(userId: UserId?) {
-        networkRepository.initVkApi(userId)
-    }
 
     override fun showUnsubscribed(): MainViewState = localRepository.getAll()
 
@@ -30,8 +31,18 @@ class RepositoryImpl : Repository {
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
-                        data.add(Subscription(it.id, it.name, it.photo100))
-                        Log.i(javaClass.simpleName, "name - ${it.name}, photo - ${it.photo200}")
+                        data.add(
+                            Subscription(
+                                it.id,
+                                it.name,
+                                it.photo100,
+                            )
+                        )
+
+                        Log.i(
+                            javaClass.simpleName,
+                            "name - ${it.name}, photo - ${it.photo200}, membersCountText - ${it.membersCountText}"
+                        )
                     }
                     MainViewState.Success(data)
                 }
@@ -63,6 +74,20 @@ class RepositoryImpl : Repository {
         localRepository.delete(subscriptions)
         clearList()
         return showUnsubscribed()
+    }
+
+    override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState {
+        val time = networkRepository.getLastPost(groupId)
+        val group = networkRepository.getGroupById(groupId)[0]
+        val url = "${Constants.VK_BASE_URL}${group.screenName}"
+        return BottomSheetViewState.Success(
+            SubscriptionInfo(
+                group.membersCount,
+                group.description,
+                time,
+                url
+            )
+        )
     }
 
     override fun clearList() = subscriptions.clear()

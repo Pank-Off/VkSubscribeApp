@@ -6,14 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.TranslateAnimation
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
-import com.vk.dto.common.id.UserId
 import ru.punkoff.vksubscribeapp.R
+import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetFragment
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
-import ru.punkoff.vksubscribeapp.login.LoginActivity
 import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
 import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            val userId = intent.getParcelableExtra<UserId>(LoginActivity.EXTRA_USER_ID)
-            viewModel.initVkApi(userId)
             viewModel.requestData()
         }
 
@@ -47,6 +45,11 @@ class MainActivity : AppCompatActivity() {
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        Toast.makeText(
+                            this@MainActivity,
+                            getString(R.string.something_went_wrong_text),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.GONE
                         emptyListTv.visibility = View.GONE
@@ -126,6 +129,16 @@ class MainActivity : AppCompatActivity() {
                     val count = viewModel.getSubscriptionsSize()
                     setAnimation(count, binding)
                     unsubscribeBtn.counter.text = count.toString()
+                }
+
+                override fun onLongClick(subscription: Subscription) {
+                    val bundle = Bundle()
+                    bundle.putParcelable(
+                        KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT,
+                        subscription
+                    )
+                    BottomSheetFragment.newInstance(bundle)
+                        .show(supportFragmentManager, "choose_fragment")
                 }
             })
 
@@ -218,6 +231,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_VISIBLE_BUTTON = "EXTRA_VISIBLE_BUTTON"
         const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
         const val EXTRA_REQUEST_IS_STILL_IN_PROGRESS = "EXTRA_REQUEST_IS_STILL_IN_PROGRESS"
+        const val KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT = "KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT"
     }
 
     override fun onDestroy() {

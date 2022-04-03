@@ -1,23 +1,18 @@
 package ru.punkoff.vksubscribeapp.main
 
-import com.vk.dto.common.id.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.punkoff.vksubscribeapp.base.BaseViewModel
 import ru.punkoff.vksubscribeapp.model.Subscription
-import ru.punkoff.vksubscribeapp.repository.RepositoryImpl
+import ru.punkoff.vksubscribeapp.repository.Repository
+import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
 
-class MainViewModel : BaseViewModel() {
+class MainViewModel(private val repo: Repository = ServiceProvider.repository) : BaseViewModel() {
 
-    private val repo = RepositoryImpl()
     private val _mainStateFlow = MutableStateFlow<MainViewState>(MainViewState.Loading)
     val mainStateFlow = _mainStateFlow.asStateFlow()
-
-    fun initVkApi(userId: UserId?) {
-        repo.initVkApi(userId)
-    }
 
     fun requestData() {
         cancelJob()

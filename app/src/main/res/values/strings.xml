@@ -8,6 +8,10 @@
     <string name="subscribe">Подписаться</string>
     <string name="subscribe_text">Подписаться на сообщества</string>
     <string name="info_if_list_is_empty">Список сообществ пока пуст.</string>
+    <string name="open">Открыть</string>
 
+    <string name="members_count">%1$s подписчиков</string>
+    <string name="last_post">Последняя запись %1$s</string>
+    <string name="something_went_wrong_text">Что то пошло не так..</string>
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>
