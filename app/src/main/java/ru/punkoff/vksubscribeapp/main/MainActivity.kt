@@ -18,6 +18,7 @@ import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
 import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
+import ru.punkoff.vksubscribeapp.utils.isOnline
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,17 +46,28 @@ class MainActivity : AppCompatActivity() {
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                        Toast.makeText(
-                            this@MainActivity,
-                            getString(R.string.something_went_wrong_text),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (!isOnline(this@MainActivity)) {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.check_your_internet_message),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.something_went_wrong_text),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        retryBtn.visibility = View.VISIBLE
                         unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.GONE
                         emptyListTv.visibility = View.GONE
+                        communitiesAdapter.submitList(emptyList())
                     }
                     MainViewState.Loading -> {
                         setAnimation(0, binding)
+                        retryBtn.visibility = View.GONE
                         unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
                         progressBar.visibility = View.VISIBLE
                         emptyListTv.visibility = View.GONE
@@ -63,10 +75,11 @@ class MainActivity : AppCompatActivity() {
                     is MainViewState.Success -> {
                         setEnabled(true)
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
-                        emptyListTv.visibility = View.GONE
                         val count = viewModel.getSubscriptionsSize()
                         setAnimation(count, binding)
                         unsubscribeBtn.counter.text = count.toString()
+                        retryBtn.visibility = View.GONE
+                        emptyListTv.visibility = View.GONE
                         unsubscribeBtn.progressBarBtn.visibility = View.GONE
                         unsubscribeBtn.counter.visibility = View.VISIBLE
                         progressBar.visibility = View.INVISIBLE
@@ -74,6 +87,31 @@ class MainActivity : AppCompatActivity() {
                             emptyListTv.visibility = View.VISIBLE
                         }
                         communitiesAdapter.submitList(viewState.items)
+                    }
+                    is MainViewState.SubscribeError -> {
+                        setEnabled(true)
+                        unsubscribeBtn.counter.visibility = View.VISIBLE
+                        unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
+
+                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        if (!isOnline(this@MainActivity)) {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.check_your_internet_message),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.something_went_wrong_text),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    MainViewState.SubscribeLoading -> {
+                        setEnabled(false)
+                        unsubscribeBtn.counter.visibility = View.INVISIBLE
+                        unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
                     }
                 }
             }
@@ -188,9 +226,6 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding.unsubscribeBtn) {
             rootUnsubscribeBtn.setOnClickListener {
-                setEnabled(false)
-                counter.visibility = View.INVISIBLE
-                progressBarBtn.visibility = View.VISIBLE
                 if (binding.visibleBtn.isSelected) {
                     viewModel.joinGroups()
                 } else {
@@ -200,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            binding.visibleBtn.setOnClickListener {
+            visibleBtn.setOnClickListener {
                 viewModel.clearUnsubscribedList()
                 it.isSelected = !it.isSelected
 
@@ -215,6 +250,10 @@ class MainActivity : AppCompatActivity() {
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.requestData()
                 }
+            }
+
+            retryBtn.setOnClickListener {
+                viewModel.requestData()
             }
         }
     }

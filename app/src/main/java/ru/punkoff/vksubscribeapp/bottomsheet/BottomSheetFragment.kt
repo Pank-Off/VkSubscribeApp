@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.punkoff.vksubscribeapp.R
@@ -16,8 +15,9 @@ import ru.punkoff.vksubscribeapp.main.MainActivity
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.utils.collectFlow
+import ru.punkoff.vksubscribeapp.utils.isOnline
 import ru.punkoff.vksubscribeapp.utils.parseCount
-import ru.punkoff.vksubscribeapp.utils.parseIntToDate
+import ru.punkoff.vksubscribeapp.utils.parseLongToDate
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -26,6 +26,7 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: BottomSheetViewModel by viewModels()
 
+    private lateinit var subscription: Subscription
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,44 +38,67 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val subscription =
+        subscription =
             arguments?.get(MainActivity.KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT) as Subscription
+        binding.title.text = subscription.name
+
         viewModel.getSubscriptionInfo(subscription.groupId!!.value)
         collectFlow(viewModel.bottomSheetStateFlow) {
             when (it) {
                 is BottomSheetViewState.ERROR -> {
-                    binding.openWebPageBtn.isEnabled = false
                     Log.e(javaClass.simpleName, it.exc.stackTraceToString())
-                    Toast.makeText(
-                        context,
-                        getString(R.string.something_went_wrong_text),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (!isOnline(context)) {
+                        showError(getString(R.string.check_your_internet_message))
+                    } else {
+                        showError(getString(R.string.something_went_wrong_text))
+                    }
                 }
                 BottomSheetViewState.Loading -> {
-                    binding.openWebPageBtn.isEnabled = false
-                    binding.progressBar.visibility = View.VISIBLE
+                    with(binding) {
+                        openTvBtn.text = getString(R.string.open)
+                        errorMsg.visibility = View.GONE
+                        openWebPageBtn.isEnabled = false
+                        progressBar.visibility = View.VISIBLE
+                    }
                 }
                 is BottomSheetViewState.Success -> {
+                    binding.errorMsg.visibility = View.GONE
                     Log.e(javaClass.simpleName, "Success!")
-                    showData(subscription, it.info)
+                    showData(it.info)
                 }
             }
         }
     }
 
-    private fun showData(subscription: Subscription, subscriptionInfo: SubscriptionInfo) {
-
-        val count = parseCount(subscriptionInfo.membersCount)
-        val date = parseIntToDate(subscriptionInfo.lastPostDate)
+    private fun showError(errorText: String) {
         with(binding) {
             openWebPageBtn.isEnabled = true
             progressBar.visibility = View.GONE
-            title.text = subscription.name
+            lastPost.visibility = View.INVISIBLE
+            description.visibility = View.INVISIBLE
+            membersCount.visibility = View.INVISIBLE
+            errorMsg.visibility = View.VISIBLE
+            errorMsg.text = errorText
+            openTvBtn.text = getString(R.string.retry_text)
+            openWebPageBtn.setOnClickListener {
+                viewModel.getSubscriptionInfo(subscription.groupId!!.value)
+            }
+        }
+    }
+
+    private fun showData(subscriptionInfo: SubscriptionInfo) {
+
+        val count = parseCount(subscriptionInfo.membersCount)
+        val date = parseLongToDate(subscriptionInfo.lastPostDate)
+        with(binding) {
+            openWebPageBtn.isEnabled = true
+            progressBar.visibility = View.GONE
             membersCount.text = getString(R.string.members_count, count)
             description.text = subscriptionInfo.description
             lastPost.text = getString(R.string.last_post, date)
-
+            lastPost.visibility = View.VISIBLE
+            description.visibility = View.VISIBLE
+            membersCount.visibility = View.VISIBLE
             openWebPageBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(subscriptionInfo.url))
                 startActivity(intent)

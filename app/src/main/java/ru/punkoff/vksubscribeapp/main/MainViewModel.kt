@@ -33,6 +33,7 @@ class MainViewModel(private val repo: Repository = ServiceProvider.repository) :
 
     fun leaveGroups() {
         cancelJob()
+        _mainStateFlow.value = MainViewState.SubscribeLoading
         viewModelCoroutineScope.launch(Dispatchers.IO) {
             _mainStateFlow.value = repo.leaveGroups()
         }
@@ -40,6 +41,7 @@ class MainViewModel(private val repo: Repository = ServiceProvider.repository) :
 
     fun joinGroups() {
         cancelJob()
+        _mainStateFlow.value = MainViewState.SubscribeLoading
         viewModelCoroutineScope.launch(Dispatchers.IO) {
             _mainStateFlow.value = repo.joinGroups()
         }
