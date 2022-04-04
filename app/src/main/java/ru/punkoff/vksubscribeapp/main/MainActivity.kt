@@ -46,78 +46,103 @@ class MainActivity : AppCompatActivity() {
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                        if (!isOnline(this@MainActivity)) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.check_your_internet_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.something_went_wrong_text),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        retryBtn.visibility = View.VISIBLE
-                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-                        progressBar.visibility = View.GONE
-                        emptyListTv.visibility = View.GONE
-                        communitiesAdapter.submitList(emptyList())
+                        showError()
                     }
                     MainViewState.Loading -> {
-                        setAnimation(0, binding)
-                        retryBtn.visibility = View.GONE
-                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-                        progressBar.visibility = View.VISIBLE
-                        emptyListTv.visibility = View.GONE
+                        handleLoading()
                     }
                     is MainViewState.Success -> {
-                        setEnabled(true)
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
-                        val count = viewModel.getSubscriptionsSize()
-                        setAnimation(count, binding)
-                        unsubscribeBtn.counter.text = count.toString()
-                        retryBtn.visibility = View.GONE
-                        emptyListTv.visibility = View.GONE
-                        unsubscribeBtn.progressBarBtn.visibility = View.GONE
-                        unsubscribeBtn.counter.visibility = View.VISIBLE
-                        progressBar.visibility = View.INVISIBLE
+                        showData()
                         if (viewState.items.isEmpty()) {
                             emptyListTv.visibility = View.VISIBLE
                         }
                         communitiesAdapter.submitList(viewState.items)
                     }
                     is MainViewState.SubscribeError -> {
-                        setEnabled(true)
-                        unsubscribeBtn.counter.visibility = View.VISIBLE
-                        unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
-
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                        if (!isOnline(this@MainActivity)) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.check_your_internet_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.something_went_wrong_text),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        handleSubscribeError()
                     }
                     MainViewState.SubscribeLoading -> {
-                        setEnabled(false)
-                        unsubscribeBtn.counter.visibility = View.INVISIBLE
-                        unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
+                        handleSubscribeLoading()
                     }
                 }
             }
         }
         setUpAdapter()
         setClickListeners()
+    }
+
+    private fun showError(){
+        if (!isOnline(this@MainActivity)) {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.check_your_internet_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.something_went_wrong_text),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        with(binding) {
+            retryBtn.visibility = View.VISIBLE
+            unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            emptyListTv.visibility = View.GONE
+        }
+        communitiesAdapter.submitList(emptyList())
+    }
+
+    private fun handleLoading(){
+        setAnimation(0, binding)
+        with(binding) {
+            retryBtn.visibility = View.GONE
+            unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            emptyListTv.visibility = View.GONE
+        }
+    }
+    private fun showData(){
+        setEnabled(true)
+        val count = viewModel.getSubscriptionsSize()
+        setAnimation(count, binding)
+        with(binding) {
+            unsubscribeBtn.counter.text = count.toString()
+            retryBtn.visibility = View.GONE
+            emptyListTv.visibility = View.GONE
+            unsubscribeBtn.progressBarBtn.visibility = View.GONE
+            unsubscribeBtn.counter.visibility = View.VISIBLE
+            progressBar.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun handleSubscribeError(){
+        setEnabled(true)
+        binding.unsubscribeBtn.counter.visibility = View.VISIBLE
+        binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
+
+        if (!isOnline(this@MainActivity)) {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.check_your_internet_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.something_went_wrong_text),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun handleSubscribeLoading(){
+        setEnabled(false)
+        binding.unsubscribeBtn.counter.visibility = View.INVISIBLE
+        binding.unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
