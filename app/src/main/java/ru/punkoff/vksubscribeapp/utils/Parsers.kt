@@ -4,7 +4,6 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
  * Parser for numbers
  * 1-9999: return count

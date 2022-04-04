@@ -232,7 +232,8 @@ class MainActivity : AppCompatActivity() {
                     ).apply {
                         duration = 100
                         fillAfter = true
-                    })
+                    }
+                )
                 rootUnsubscribeBtn.visibility = View.GONE
             }
             if (count == 1 && counter.text == "0") {
@@ -246,7 +247,8 @@ class MainActivity : AppCompatActivity() {
                     ).apply {
                         duration = 100
                         fillAfter = true
-                    })
+                    }
+                )
             }
         }
     }

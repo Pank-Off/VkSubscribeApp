@@ -73,7 +73,6 @@ class RepositoryImpl
         return MainViewState.SubscribeError(it)
     })
 
-
     override suspend fun joinGroups(): MainViewState = Result.runCatching {
         networkRepository.joinGroups(subscriptions)
     }.fold({
@@ -83,7 +82,6 @@ class RepositoryImpl
     }, {
         return MainViewState.SubscribeError(it)
     })
-
 
     override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState = Result.runCatching {
         val time = networkRepository.getLastPost(groupId)

@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
             }
             is VKAuthenticationResult.Failed -> {
                 result.exception.stackTraceToString()
-                if(!isOnline(this)){
+                if (!isOnline(this)) {
                     Toast.makeText(this, getString(R.string.check_your_internet_message), Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, getString(R.string.something_went_wrong_text), Toast.LENGTH_SHORT).show()

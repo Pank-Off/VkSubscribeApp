@@ -18,7 +18,6 @@ class NetworkRepositoryImpl @Inject constructor(private val vkApi: VkApi) :
             Log.i(javaClass.simpleName, "DataSize: ${it.count}")
             emit(NetworkState.Success(it.items))
         }
-
     }.catch {
         emit(NetworkState.Error(it))
     }
