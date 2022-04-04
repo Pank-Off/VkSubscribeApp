@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
@@ -42,12 +41,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val signIn = findViewById<CardView>(R.id.sign_in_btn)
         val fingerprints = getCertificateFingerprint(this, this.packageName)!!
-
         Log.i(javaClass.simpleName, fingerprints[0].toString())
-        signIn.setOnClickListener {
-            authLauncher.launch(arrayListOf(VKScope.GROUPS))
-        }
+
+        authLauncher.launch(arrayListOf(VKScope.GROUPS))
     }
 }

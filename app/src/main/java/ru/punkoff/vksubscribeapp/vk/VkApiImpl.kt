@@ -7,30 +7,31 @@ import com.vk.sdk.api.groups.dto.GroupsFields
 import com.vk.sdk.api.wall.WallService
 import kotlinx.coroutines.flow.flow
 import ru.punkoff.vksubscribeapp.model.Subscription
+import javax.inject.Inject
 
-class VkApiImpl(private val userId: UserId? = VK.getUserId()) {
+class VkApiImpl @Inject constructor(private val userId: UserId?) : VkApi {
 
-    fun getGroups() = flow {
+    override fun getGroups() = flow {
         val response = VK.executeSync(GroupsService().groupsGetExtended(userId = userId))
         emit(response)
     }
 
-    fun leaveGroups(subscriptions: List<Subscription>) {
+    override fun leaveGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             VK.executeSync(GroupsService().groupsLeave(it.groupId!!))
         }
     }
 
-    fun joinGroups(subscriptions: List<Subscription>) {
+    override fun joinGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             VK.executeSync(GroupsService().groupsJoin(it.groupId))
         }
     }
 
-    fun getLastPost(groupId: UserId?) =
+    override fun getLastPost(groupId: UserId?) =
         VK.executeSync(WallService().wallGetExtended(groupId, count = 2))
 
-    fun getGroupById(groupId: UserId) =
+    override fun getGroupById(groupId: UserId) =
         VK.executeSync(
             GroupsService().groupsGetById(
                 listOf(groupId),

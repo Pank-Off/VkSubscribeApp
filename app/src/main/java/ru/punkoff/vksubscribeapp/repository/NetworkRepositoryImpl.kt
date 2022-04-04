@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import ru.punkoff.vksubscribeapp.model.Subscription
-import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
-import ru.punkoff.vksubscribeapp.vk.VkApiImpl
+import ru.punkoff.vksubscribeapp.vk.VkApi
+import javax.inject.Inject
 
-class NetworkRepositoryImpl(private val vkApi: VkApiImpl = ServiceProvider.vkApi) :
+class NetworkRepositoryImpl @Inject constructor(private val vkApi: VkApi) :
     NetworkRepository {
 
     override fun getGroups() = flow<NetworkState> {
