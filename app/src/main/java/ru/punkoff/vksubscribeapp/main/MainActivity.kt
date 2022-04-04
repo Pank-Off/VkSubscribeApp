@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetFragment
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
@@ -20,6 +21,7 @@ import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.isOnline
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         setClickListeners()
     }
 
-    private fun showError(){
+    private fun showError() {
         if (!isOnline(this@MainActivity)) {
             Toast.makeText(
                 this@MainActivity,
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         communitiesAdapter.submitList(emptyList())
     }
 
-    private fun handleLoading(){
+    private fun handleLoading() {
         setAnimation(0, binding)
         with(binding) {
             retryBtn.visibility = View.GONE
@@ -105,7 +107,8 @@ class MainActivity : AppCompatActivity() {
             emptyListTv.visibility = View.GONE
         }
     }
-    private fun showData(){
+
+    private fun showData() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
         setAnimation(count, binding)
@@ -119,7 +122,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSubscribeError(){
+    private fun handleSubscribeError() {
         setEnabled(true)
         binding.unsubscribeBtn.counter.visibility = View.VISIBLE
         binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
@@ -139,7 +142,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSubscribeLoading(){
+    private fun handleSubscribeLoading() {
         setEnabled(false)
         binding.unsubscribeBtn.counter.visibility = View.INVISIBLE
         binding.unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE

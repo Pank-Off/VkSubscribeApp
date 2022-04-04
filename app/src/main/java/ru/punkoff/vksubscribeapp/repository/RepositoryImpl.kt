@@ -6,12 +6,13 @@ import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
-import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
 import ru.punkoff.vksubscribeapp.utils.Constants
+import javax.inject.Inject
 
-class RepositoryImpl(
-    private val networkRepository: NetworkRepository = ServiceProvider.networkRepository,
-    private val localRepository: LocalRepository = ServiceProvider.localRepository
+class RepositoryImpl
+@Inject constructor(
+    private val networkRepository: NetworkRepository,
+    private val localRepository: LocalRepository
 ) : Repository {
 
     private val subscriptions = mutableListOf<Subscription>()

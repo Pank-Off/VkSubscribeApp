@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.BottomSheetLayoutBinding
 import ru.punkoff.vksubscribeapp.main.MainActivity
@@ -19,6 +20,7 @@ import ru.punkoff.vksubscribeapp.utils.isOnline
 import ru.punkoff.vksubscribeapp.utils.parseCount
 import ru.punkoff.vksubscribeapp.utils.parseLongToDate
 
+@AndroidEntryPoint
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetLayoutBinding? = null

@@ -1,14 +1,16 @@
 package ru.punkoff.vksubscribeapp.bottomsheet
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.punkoff.vksubscribeapp.base.BaseViewModel
 import ru.punkoff.vksubscribeapp.repository.Repository
-import ru.punkoff.vksubscribeapp.serviceprovider.ServiceProvider
+import javax.inject.Inject
 
-class BottomSheetViewModel(private val repo: Repository = ServiceProvider.repository) :
+@HiltViewModel
+class BottomSheetViewModel @Inject constructor(private val repo: Repository) :
     BaseViewModel() {
 
     private val _bottomSheetStateFlow =
