@@ -10,6 +10,8 @@
         android:id="@+id/photo"
         android:layout_width="@dimen/image_size"
         android:layout_height="@dimen/image_size"
+        android:background="@drawable/selectable_item_background"
+        android:padding="@dimen/border_width"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

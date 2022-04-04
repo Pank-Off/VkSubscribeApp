@@ -62,33 +62,43 @@ class RepositoryImpl(
         subscriptions.remove(subscription)
     }
 
-    override suspend fun leaveGroups(): MainViewState {
+    override suspend fun leaveGroups(): MainViewState = Result.runCatching {
         networkRepository.leaveGroups(subscriptions)
+    }.fold({
         localRepository.insert(subscriptions)
         clearList()
         return getGroups()
-    }
+    }, {
+        return MainViewState.SubscribeError(it)
+    })
 
-    override suspend fun joinGroups(): MainViewState {
+
+    override suspend fun joinGroups(): MainViewState = Result.runCatching {
         networkRepository.joinGroups(subscriptions)
+    }.fold({
         localRepository.delete(subscriptions)
         clearList()
         return showUnsubscribed()
-    }
+    }, {
+        return MainViewState.SubscribeError(it)
+    })
 
-    override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState {
+
+    override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState = Result.runCatching {
         val time = networkRepository.getLastPost(groupId)
         val group = networkRepository.getGroupById(groupId)[0]
         val url = "${Constants.VK_BASE_URL}${group.screenName}"
-        return BottomSheetViewState.Success(
-            SubscriptionInfo(
-                group.membersCount,
-                group.description,
-                time,
-                url
-            )
+        SubscriptionInfo(
+            group.membersCount,
+            group.description,
+            time,
+            url
         )
-    }
+    }.fold({
+        return BottomSheetViewState.Success(it)
+    }, {
+        return BottomSheetViewState.ERROR(it)
+    })
 
     override fun clearList() = subscriptions.clear()
 

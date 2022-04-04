@@ -49,12 +49,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"
         android:drawablePadding="12dp"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_article_outline_20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/members_count"
         tools:text="Разрабатываем приложения для вас и ваших друзей с 2011 года." />
@@ -67,9 +67,9 @@
         android:layout_margin="16dp"
         android:drawablePadding="12dp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_newsfeed_outline_20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description"
         tools:text="Последняя запись 8 февраля" />
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/last_post">
 
         <TextView
-            android:id="@+id/unsubscribe_tv_btn"
+            android:id="@+id/open_tv_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -114,6 +114,22 @@
         android:layout_gravity="center"
         android:indeterminateTint="@color/vk_main_color"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/error_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:text="@string/check_your_internet_message"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

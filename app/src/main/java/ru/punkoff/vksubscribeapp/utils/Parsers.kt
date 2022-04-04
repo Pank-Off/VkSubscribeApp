@@ -30,7 +30,7 @@ fun parseCount(count: Int?): String {
     return res
 }
 
-fun parseIntToDate(time: Long?): String {
+fun parseLongToDate(time: Long?): String {
     val locale = Locale("ru")
     val simpleDateFormat = SimpleDateFormat("d MMMM", locale)
     Log.e("parseToDate", time.toString())

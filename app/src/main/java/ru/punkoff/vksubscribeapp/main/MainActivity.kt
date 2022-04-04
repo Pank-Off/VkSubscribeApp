@@ -18,6 +18,7 @@ import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
 import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
+import ru.punkoff.vksubscribeapp.utils.isOnline
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,41 +46,103 @@ class MainActivity : AppCompatActivity() {
                 when (viewState) {
                     is MainViewState.ERROR -> {
                         Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                        Toast.makeText(
-                            this@MainActivity,
-                            getString(R.string.something_went_wrong_text),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-                        progressBar.visibility = View.GONE
-                        emptyListTv.visibility = View.GONE
+                        showError()
                     }
                     MainViewState.Loading -> {
-                        setAnimation(0, binding)
-                        unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-                        progressBar.visibility = View.VISIBLE
-                        emptyListTv.visibility = View.GONE
+                        handleLoading()
                     }
                     is MainViewState.Success -> {
-                        setEnabled(true)
                         Log.e(javaClass.simpleName, "Success: ${viewState.items}")
-                        emptyListTv.visibility = View.GONE
-                        val count = viewModel.getSubscriptionsSize()
-                        setAnimation(count, binding)
-                        unsubscribeBtn.counter.text = count.toString()
-                        unsubscribeBtn.progressBarBtn.visibility = View.GONE
-                        unsubscribeBtn.counter.visibility = View.VISIBLE
-                        progressBar.visibility = View.INVISIBLE
+                        showData()
                         if (viewState.items.isEmpty()) {
                             emptyListTv.visibility = View.VISIBLE
                         }
                         communitiesAdapter.submitList(viewState.items)
+                    }
+                    is MainViewState.SubscribeError -> {
+                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        handleSubscribeError()
+                    }
+                    MainViewState.SubscribeLoading -> {
+                        handleSubscribeLoading()
                     }
                 }
             }
         }
         setUpAdapter()
         setClickListeners()
+    }
+
+    private fun showError(){
+        if (!isOnline(this@MainActivity)) {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.check_your_internet_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.something_went_wrong_text),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        with(binding) {
+            retryBtn.visibility = View.VISIBLE
+            unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            emptyListTv.visibility = View.GONE
+        }
+        communitiesAdapter.submitList(emptyList())
+    }
+
+    private fun handleLoading(){
+        setAnimation(0, binding)
+        with(binding) {
+            retryBtn.visibility = View.GONE
+            unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            emptyListTv.visibility = View.GONE
+        }
+    }
+    private fun showData(){
+        setEnabled(true)
+        val count = viewModel.getSubscriptionsSize()
+        setAnimation(count, binding)
+        with(binding) {
+            unsubscribeBtn.counter.text = count.toString()
+            retryBtn.visibility = View.GONE
+            emptyListTv.visibility = View.GONE
+            unsubscribeBtn.progressBarBtn.visibility = View.GONE
+            unsubscribeBtn.counter.visibility = View.VISIBLE
+            progressBar.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun handleSubscribeError(){
+        setEnabled(true)
+        binding.unsubscribeBtn.counter.visibility = View.VISIBLE
+        binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
+
+        if (!isOnline(this@MainActivity)) {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.check_your_internet_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.something_went_wrong_text),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun handleSubscribeLoading(){
+        setEnabled(false)
+        binding.unsubscribeBtn.counter.visibility = View.INVISIBLE
+        binding.unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -188,9 +251,6 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         with(binding.unsubscribeBtn) {
             rootUnsubscribeBtn.setOnClickListener {
-                setEnabled(false)
-                counter.visibility = View.INVISIBLE
-                progressBarBtn.visibility = View.VISIBLE
                 if (binding.visibleBtn.isSelected) {
                     viewModel.joinGroups()
                 } else {
@@ -200,7 +260,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            binding.visibleBtn.setOnClickListener {
+            visibleBtn.setOnClickListener {
                 viewModel.clearUnsubscribedList()
                 it.isSelected = !it.isSelected
 
@@ -215,6 +275,10 @@ class MainActivity : AppCompatActivity() {
                     unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.requestData()
                 }
+            }
+
+            retryBtn.setOnClickListener {
+                viewModel.requestData()
             }
         }
     }

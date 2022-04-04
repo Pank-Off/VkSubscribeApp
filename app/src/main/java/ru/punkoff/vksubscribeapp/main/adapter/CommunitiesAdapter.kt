@@ -51,6 +51,7 @@ class CommunitiesAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val borderColor = binding.root.resources.getColor(R.color.border_item_color, null)
+        private val borderWidth = binding.root.resources.getDimension(R.dimen.border_width)
         fun bind(currentItem: Subscription) {
             with(binding) {
                 root.isEnabled = isEnabled
@@ -78,7 +79,7 @@ class CommunitiesAdapter :
             val roundingParams = RoundingParams()
             roundingParams.roundAsCircle = true
             if (currentItem.isSelected) {
-                roundingParams.setBorder(borderColor, 5.0f)
+                roundingParams.setBorder(borderColor, borderWidth)
             }
             return roundingParams
         }
