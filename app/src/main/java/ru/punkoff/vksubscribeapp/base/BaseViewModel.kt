@@ -6,11 +6,12 @@ import kotlinx.coroutines.*
 
 abstract class BaseViewModel : ViewModel() {
     protected val viewModelCoroutineScope = CoroutineScope(
-        Dispatchers.Main
-                + SupervisorJob()
-                + CoroutineExceptionHandler { _, throwable ->
-            handleError(throwable)
-        })
+        Dispatchers.Main +
+            SupervisorJob() +
+            CoroutineExceptionHandler { _, throwable ->
+                handleError(throwable)
+            }
+    )
 
     override fun onCleared() {
         super.onCleared()

@@ -8,7 +8,9 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
 class CircularTextView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private val background = Paint().apply {
