@@ -14,6 +14,6 @@
     <string name="last_post">Последняя запись %1$s</string>
     <string name="something_went_wrong_text">Что то пошло не так..</string>
     <string name="check_your_internet_message">Проверьте ваше соединение с интернетом</string>
-    <string name="retry_text">Повторить</string>
+    <string name="retry_text">Повторить попытку</string>
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>
