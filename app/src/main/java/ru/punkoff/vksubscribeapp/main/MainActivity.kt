@@ -124,8 +124,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleSubscribeError() {
         setEnabled(true)
-        binding.unsubscribeBtn.counter.visibility = View.VISIBLE
-        binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
+        val count = viewModel.getSubscriptionsSize()
+        with(binding){
+            unsubscribeBtn.counter.text = count.toString()
+            binding.unsubscribeBtn.counter.visibility = View.VISIBLE
+            binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
+        }
 
         if (!isOnline(this@MainActivity)) {
             Toast.makeText(
@@ -162,6 +166,11 @@ class MainActivity : AppCompatActivity() {
                 unsubscribeBtn.rootUnsubscribeBtn.isEnabled
             )
         }
+
+        outState.putParcelableArrayList(
+            EXTRA_CURRENT_LIST,ArrayList(
+            communitiesAdapter.currentList)
+        )
         super.onSaveInstanceState(outState)
     }
 
@@ -177,7 +186,11 @@ class MainActivity : AppCompatActivity() {
             if (!savedInstanceState.getBoolean(EXTRA_REQUEST_IS_STILL_IN_PROGRESS)) {
                 unsubscribeBtn.counter.visibility = View.GONE
                 unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
-                setEnabled(false)
+            }
+            if(communitiesAdapter.currentList.isEmpty()) {
+                val currentList =
+                    savedInstanceState.getParcelableArrayList<Subscription>(EXTRA_CURRENT_LIST)
+                communitiesAdapter.submitList(currentList)
             }
         }
     }
@@ -301,6 +314,7 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_MOTION_LAYOUT_STATE = "EXTRA_MOTION_LAYOUT_STATE"
         const val EXTRA_REQUEST_IS_STILL_IN_PROGRESS = "EXTRA_REQUEST_IS_STILL_IN_PROGRESS"
         const val KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT = "KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT"
+        const val EXTRA_CURRENT_LIST = "EXTRA_CURRENT_LIST"
     }
 
     override fun onDestroy() {
