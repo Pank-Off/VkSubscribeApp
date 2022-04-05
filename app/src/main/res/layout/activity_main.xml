@@ -18,13 +18,10 @@
 
         <TextView
             android:id="@+id/title_toolbar"
+            style="@style/TitleToolbarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="@string/communities"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:paddingBottom="50dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintTop_toBottomOf="@+id/main_description" />
 
     <include
@@ -80,8 +76,7 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminateTint="@color/vk_main_color"
+        android:indeterminateTint="@color/vk_secondary_color"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -103,17 +98,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/retry_btn"
-        android:layout_width="wrap_content"
+        style="@style/VkButtonStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/vk_main_color"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:textAlignment="center"
         android:visibility="gone"
-        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,15 +113,11 @@
 
         <TextView
             android:id="@+id/retry_tv_btn"
+            style="@style/VKButtonTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:padding="4dp"
-            android:text="@string/retry_text"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/retry_text" />
 
     </androidx.cardview.widget.CardView>
 

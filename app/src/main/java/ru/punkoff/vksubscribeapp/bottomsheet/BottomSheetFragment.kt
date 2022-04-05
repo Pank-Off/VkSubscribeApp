@@ -43,7 +43,9 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         subscription =
             arguments?.get(MainActivity.KEY_FOR_SHOW_BOTTOM_SHEET_FRAGMENT) as Subscription
         binding.title.text = subscription.name
-
+        binding.dismissBtn.setOnClickListener {
+            dismiss()
+        }
         viewModel.getSubscriptionInfo(subscription.groupId!!.value)
         collectFlow(viewModel.bottomSheetStateFlow) {
             when (it) {
@@ -104,9 +106,6 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
             openWebPageBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(subscriptionInfo.url))
                 startActivity(intent)
-            }
-            dismissBtn.setOnClickListener {
-                dismiss()
             }
         }
     }

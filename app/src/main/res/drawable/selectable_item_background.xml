@@ -2,7 +2,7 @@
     android:color="?colorControlHighlight">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/white" />
+            <solid android:color="@color/selectable_item_background_color" />
         </shape>
     </item>
 </ripple>

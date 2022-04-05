@@ -7,14 +7,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="16dp"
-        android:gravity="start"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        style="@style/CustomBottomSheetDialogTitle"
         app:layout_constraintEnd_toStartOf="@+id/dismiss_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,13 +24,9 @@
 
     <TextView
         android:id="@+id/members_count"
+        style="@style/CustomBottomSheetDialogText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:drawablePadding="12dp"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_followers_outline_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,13 +35,9 @@
 
     <TextView
         android:id="@+id/description"
+        style="@style/CustomBottomSheetDialogText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:drawablePadding="12dp"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_article_outline_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,13 +46,9 @@
 
     <TextView
         android:id="@+id/last_post"
+        style="@style/CustomBottomSheetDialogText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:drawablePadding="12dp"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         app:drawableStartCompat="@drawable/ic_newsfeed_outline_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,18 +57,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/open_web_page_btn"
+        style="@style/VkButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="@color/vk_main_color"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:textAlignment="center"
-        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,15 +73,11 @@
 
         <TextView
             android:id="@+id/open_tv_btn"
+            style="@style/VKButtonTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:padding="4dp"
-            android:text="@string/open"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/open" />
 
     </androidx.cardview.widget.CardView>
 
@@ -111,8 +85,7 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminateTint="@color/vk_main_color"
+        android:indeterminateTint="@color/vk_secondary_color"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -121,14 +94,11 @@
 
     <TextView
         android:id="@+id/error_msg"
+        style="@style/CustomBottomSheetDialogText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:drawablePadding="12dp"
         android:gravity="center"
         android:text="@string/check_your_internet_message"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
