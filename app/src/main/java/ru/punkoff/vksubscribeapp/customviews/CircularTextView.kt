@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.withStyledAttributes
+import ru.punkoff.vksubscribeapp.R
 
 class CircularTextView @JvmOverloads constructor(
     context: Context,
@@ -13,9 +15,16 @@ class CircularTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    private val background = Paint().apply {
-        color = Color.WHITE
-        flags = Paint.ANTI_ALIAS_FLAG
+    private lateinit var background: Paint
+
+    init {
+        context.withStyledAttributes(attrs, R.styleable.CircularTextView) {
+            val backColor = getColor(R.styleable.CircularTextView_backgroundColor, Color.WHITE)
+            background = Paint().apply {
+                color = backColor
+                flags = Paint.ANTI_ALIAS_FLAG
+            }
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
