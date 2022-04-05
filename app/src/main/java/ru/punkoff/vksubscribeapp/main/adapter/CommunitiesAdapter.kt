@@ -2,6 +2,7 @@ package ru.punkoff.vksubscribeapp.main.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -51,6 +52,8 @@ class CommunitiesAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val borderColor = binding.root.resources.getColor(R.color.border_item_color, null)
+
+        //  private val borderOverlayImage = ResourcesCompat.getDrawable(binding.root.resources,R.drawable.check_circle_on_photo, null)
         private val borderWidth = binding.root.resources.getDimension(R.dimen.border_width)
         fun bind(currentItem: Subscription) {
             with(binding) {
@@ -77,9 +80,13 @@ class CommunitiesAdapter :
 
         private fun getImageStyle(currentItem: Subscription): RoundingParams {
             val roundingParams = RoundingParams()
+
             roundingParams.roundAsCircle = true
             if (currentItem.isSelected) {
+                binding.checkItemIcon.visibility = View.VISIBLE
                 roundingParams.setBorder(borderColor, borderWidth)
+            } else {
+                binding.checkItemIcon.visibility = View.GONE
             }
             return roundingParams
         }
