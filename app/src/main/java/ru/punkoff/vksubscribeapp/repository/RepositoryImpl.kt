@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
+import ru.punkoff.vksubscribeapp.main.State
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.utils.Constants
@@ -28,7 +29,7 @@ class RepositoryImpl
             state = when (viewState) {
                 is NetworkState.Error -> {
                     viewState.throwable.printStackTrace()
-                    MainViewState.ERROR(viewState.throwable)
+                    MainViewState.ERROR(State(viewState.throwable))
                 }
                 is NetworkState.Success -> {
                     viewState.group.forEach {
@@ -70,7 +71,7 @@ class RepositoryImpl
         clearList()
         return getGroups()
     }, {
-        return MainViewState.SubscribeError(it)
+        return MainViewState.SubscribeError(State(it))
     })
 
     override suspend fun joinGroups(): MainViewState = Result.runCatching {
@@ -80,7 +81,7 @@ class RepositoryImpl
         clearList()
         return showUnsubscribed()
     }, {
-        return MainViewState.SubscribeError(it)
+        return MainViewState.SubscribeError(State(it))
     })
 
     override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState = Result.runCatching {

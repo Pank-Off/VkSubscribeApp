@@ -47,7 +47,11 @@ class MainActivity : AppCompatActivity() {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
                     is MainViewState.ERROR -> {
-                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        val content = viewState.exc.getContentIfNotHandled()
+                        content?.let {
+                            showToastErrorMessage()
+                            Log.e(javaClass.simpleName, content.stackTraceToString())
+                        }
                         showError()
                     }
                     MainViewState.Loading -> {
@@ -62,7 +66,11 @@ class MainActivity : AppCompatActivity() {
                         communitiesAdapter.submitList(viewState.items)
                     }
                     is MainViewState.SubscribeError -> {
-                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        val content = viewState.exc.getContentIfNotHandled()
+                        content?.let {
+                            showToastErrorMessage()
+                            Log.e(javaClass.simpleName, it.stackTraceToString())
+                        }
                         handleSubscribeError()
                     }
                     MainViewState.SubscribeLoading -> {
@@ -76,19 +84,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showError() {
-        if (!isOnline(this@MainActivity)) {
-            Toast.makeText(
-                this@MainActivity,
-                getString(R.string.check_your_internet_message),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            Toast.makeText(
-                this@MainActivity,
-                getString(R.string.something_went_wrong_text),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
         with(binding) {
             retryBtn.visibility = View.VISIBLE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
@@ -125,12 +120,14 @@ class MainActivity : AppCompatActivity() {
     private fun handleSubscribeError() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
-        with(binding){
+        with(binding) {
             unsubscribeBtn.counter.text = count.toString()
             binding.unsubscribeBtn.counter.visibility = View.VISIBLE
             binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
         }
+    }
 
+    private fun showToastErrorMessage() {
         if (!isOnline(this@MainActivity)) {
             Toast.makeText(
                 this@MainActivity,
@@ -168,8 +165,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         outState.putParcelableArrayList(
-            EXTRA_CURRENT_LIST,ArrayList(
-            communitiesAdapter.currentList)
+            EXTRA_CURRENT_LIST,
+            ArrayList(
+                communitiesAdapter.currentList
+            )
         )
         super.onSaveInstanceState(outState)
     }
@@ -187,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                 unsubscribeBtn.counter.visibility = View.GONE
                 unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
             }
-            if(communitiesAdapter.currentList.isEmpty()) {
+            if (communitiesAdapter.currentList.isEmpty()) {
                 val currentList =
                     savedInstanceState.getParcelableArrayList<Subscription>(EXTRA_CURRENT_LIST)
                 communitiesAdapter.submitList(currentList)

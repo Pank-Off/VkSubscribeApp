@@ -3,7 +3,6 @@ package ru.punkoff.vksubscribeapp.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -33,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
             }
             is VKAuthenticationResult.Failed -> {
                 Log.e(javaClass.simpleName, "Failed: ${result.exception.stackTraceToString()}")
-                signInBtn?.visibility = View.VISIBLE
                 if (!isOnline(this)) {
                     Toast.makeText(this, getString(R.string.check_your_internet_message), Toast.LENGTH_SHORT).show()
                 } else {
@@ -54,7 +52,9 @@ class LoginActivity : AppCompatActivity() {
         val fingerprints = getCertificateFingerprint(this, this.packageName)!!
         Log.i(javaClass.simpleName, fingerprints[0].toString())
 
-        authLauncher.launch(arrayListOf(VKScope.GROUPS))
+        if (savedInstanceState == null) {
+            authLauncher.launch(arrayListOf(VKScope.GROUPS))
+        }
     }
 
     override fun onDestroy() {
