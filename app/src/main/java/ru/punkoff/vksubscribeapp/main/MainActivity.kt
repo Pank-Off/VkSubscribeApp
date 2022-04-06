@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLoading() {
+        setEnabled(false)
         with(binding) {
             retryBtn.visibility = View.GONE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
