@@ -51,6 +51,8 @@ class MainViewModel @Inject constructor(private val repo: Repository) : BaseView
 
     fun showUnsubscribed() {
         cancelJob()
+        _mainStateFlow.value = MainViewState.Loading
+
         viewModelCoroutineScope.launch(Dispatchers.IO) {
             _mainStateFlow.value = repo.showUnsubscribed()
         }

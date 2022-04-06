@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
@@ -20,6 +18,7 @@ import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.isOnline
+import ru.punkoff.vksubscribeapp.utils.setTranslateAnimation
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,10 +38,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.requestData()
         }
 
-        if (viewModel.getSubscriptionsSize() == 0) {
-            binding.unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-        }
-
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
@@ -52,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                             showToastErrorMessage()
                             Log.e(javaClass.simpleName, content.stackTraceToString())
                         }
-                        showError()
+                        handleError()
                     }
                     MainViewState.Loading -> {
                         handleLoading()
@@ -83,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         setClickListeners()
     }
 
-    private fun showError() {
+    private fun handleError() {
         with(binding) {
             retryBtn.visibility = View.VISIBLE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
@@ -94,7 +89,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLoading() {
-        setAnimation(0, binding)
         with(binding) {
             retryBtn.visibility = View.GONE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
@@ -106,7 +100,11 @@ class MainActivity : AppCompatActivity() {
     private fun showData() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
-        setAnimation(count, binding)
+        if (count == 0) {
+            setTranslateAnimation(false, binding.unsubscribeBtn.rootUnsubscribeBtn)
+        } else if (count == 1 && binding.unsubscribeBtn.counter.text == "0") {
+            setTranslateAnimation(true, binding.unsubscribeBtn.rootUnsubscribeBtn)
+        }
         with(binding) {
             unsubscribeBtn.counter.text = count.toString()
             retryBtn.visibility = View.GONE
@@ -205,7 +203,11 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val count = viewModel.getSubscriptionsSize()
-                    setAnimation(count, binding)
+                    if (count == 0) {
+                        setTranslateAnimation(false, unsubscribeBtn.rootUnsubscribeBtn)
+                    } else if (count == 1 && unsubscribeBtn.counter.text == "0") {
+                        setTranslateAnimation(true, unsubscribeBtn.rootUnsubscribeBtn)
+                    }
                     unsubscribeBtn.counter.text = count.toString()
                 }
 
@@ -228,40 +230,6 @@ class MainActivity : AppCompatActivity() {
                 }
             communityList.layoutManager = layoutManager
             communityList.adapter = communitiesAdapter
-        }
-    }
-
-    fun setAnimation(count: Int, binding: ActivityMainBinding) {
-        with(binding.unsubscribeBtn) {
-            if (count == 0) {
-                rootUnsubscribeBtn.visibility = View.VISIBLE
-                rootUnsubscribeBtn.startAnimation(
-                    TranslateAnimation(
-                        0f,
-                        0f,
-                        0f,
-                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat()
-                    ).apply {
-                        duration = 100
-                        fillAfter = true
-                    }
-                )
-                rootUnsubscribeBtn.visibility = View.GONE
-            }
-            if (count == 1 && counter.text == "0") {
-                rootUnsubscribeBtn.visibility = View.VISIBLE
-                rootUnsubscribeBtn.startAnimation(
-                    TranslateAnimation(
-                        0f,
-                        0f,
-                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat(),
-                        0f
-                    ).apply {
-                        duration = 100
-                        fillAfter = true
-                    }
-                )
-            }
         }
     }
 
