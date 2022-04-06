@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
@@ -20,6 +18,7 @@ import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.model.Subscription
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.isOnline
+import ru.punkoff.vksubscribeapp.utils.setTranslateAnimation
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,16 +38,16 @@ class MainActivity : AppCompatActivity() {
             viewModel.requestData()
         }
 
-        if (viewModel.getSubscriptionsSize() == 0) {
-            binding.unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
-        }
-
         with(binding) {
             collectFlow(viewModel.mainStateFlow) { viewState ->
                 when (viewState) {
                     is MainViewState.ERROR -> {
-                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
-                        showError()
+                        val content = viewState.exc.getContentIfNotHandled()
+                        content?.let {
+                            showToastErrorMessage()
+                            Log.e(javaClass.simpleName, content.stackTraceToString())
+                        }
+                        handleError()
                     }
                     MainViewState.Loading -> {
                         handleLoading()
@@ -62,7 +61,11 @@ class MainActivity : AppCompatActivity() {
                         communitiesAdapter.submitList(viewState.items)
                     }
                     is MainViewState.SubscribeError -> {
-                        Log.e(javaClass.simpleName, viewState.exc.stackTraceToString())
+                        val content = viewState.exc.getContentIfNotHandled()
+                        content?.let {
+                            showToastErrorMessage()
+                            Log.e(javaClass.simpleName, it.stackTraceToString())
+                        }
                         handleSubscribeError()
                     }
                     MainViewState.SubscribeLoading -> {
@@ -75,20 +78,7 @@ class MainActivity : AppCompatActivity() {
         setClickListeners()
     }
 
-    private fun showError() {
-        if (!isOnline(this@MainActivity)) {
-            Toast.makeText(
-                this@MainActivity,
-                getString(R.string.check_your_internet_message),
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            Toast.makeText(
-                this@MainActivity,
-                getString(R.string.something_went_wrong_text),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    private fun handleError() {
         with(binding) {
             retryBtn.visibility = View.VISIBLE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
@@ -99,7 +89,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLoading() {
-        setAnimation(0, binding)
         with(binding) {
             retryBtn.visibility = View.GONE
             unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
@@ -111,7 +100,9 @@ class MainActivity : AppCompatActivity() {
     private fun showData() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
-        setAnimation(count, binding)
+        if (count == 0) {
+            binding.unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
+        }
         with(binding) {
             unsubscribeBtn.counter.text = count.toString()
             retryBtn.visibility = View.GONE
@@ -125,12 +116,14 @@ class MainActivity : AppCompatActivity() {
     private fun handleSubscribeError() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
-        with(binding){
+        with(binding) {
             unsubscribeBtn.counter.text = count.toString()
             binding.unsubscribeBtn.counter.visibility = View.VISIBLE
             binding.unsubscribeBtn.progressBarBtn.visibility = View.INVISIBLE
         }
+    }
 
+    private fun showToastErrorMessage() {
         if (!isOnline(this@MainActivity)) {
             Toast.makeText(
                 this@MainActivity,
@@ -168,8 +161,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         outState.putParcelableArrayList(
-            EXTRA_CURRENT_LIST,ArrayList(
-            communitiesAdapter.currentList)
+            EXTRA_CURRENT_LIST,
+            ArrayList(
+                communitiesAdapter.currentList
+            )
         )
         super.onSaveInstanceState(outState)
     }
@@ -187,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                 unsubscribeBtn.counter.visibility = View.GONE
                 unsubscribeBtn.progressBarBtn.visibility = View.VISIBLE
             }
-            if(communitiesAdapter.currentList.isEmpty()) {
+            if (communitiesAdapter.currentList.isEmpty()) {
                 val currentList =
                     savedInstanceState.getParcelableArrayList<Subscription>(EXTRA_CURRENT_LIST)
                 communitiesAdapter.submitList(currentList)
@@ -206,7 +201,11 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val count = viewModel.getSubscriptionsSize()
-                    setAnimation(count, binding)
+                    if (count == 0) {
+                        setTranslateAnimation(false, unsubscribeBtn.rootUnsubscribeBtn)
+                    } else if (count == 1 && unsubscribeBtn.counter.text == "0") {
+                        setTranslateAnimation(true, unsubscribeBtn.rootUnsubscribeBtn)
+                    }
                     unsubscribeBtn.counter.text = count.toString()
                 }
 
@@ -232,40 +231,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setAnimation(count: Int, binding: ActivityMainBinding) {
-        with(binding.unsubscribeBtn) {
-            if (count == 0) {
-                rootUnsubscribeBtn.visibility = View.VISIBLE
-                rootUnsubscribeBtn.startAnimation(
-                    TranslateAnimation(
-                        0f,
-                        0f,
-                        0f,
-                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat()
-                    ).apply {
-                        duration = 100
-                        fillAfter = true
-                    }
-                )
-                rootUnsubscribeBtn.visibility = View.GONE
-            }
-            if (count == 1 && counter.text == "0") {
-                rootUnsubscribeBtn.visibility = View.VISIBLE
-                rootUnsubscribeBtn.startAnimation(
-                    TranslateAnimation(
-                        0f,
-                        0f,
-                        (rootUnsubscribeBtn.height + rootUnsubscribeBtn.marginBottom).toFloat(),
-                        0f
-                    ).apply {
-                        duration = 100
-                        fillAfter = true
-                    }
-                )
-            }
-        }
-    }
-
     private fun setClickListeners() {
         with(binding.unsubscribeBtn) {
             rootUnsubscribeBtn.setOnClickListener {
@@ -285,14 +250,13 @@ class MainActivity : AppCompatActivity() {
                 if (it.isSelected) {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
                     unsubscribeTv.text = getString(R.string.subscribe_text)
-                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.showUnsubscribed()
                 } else {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
                     unsubscribeTv.text = getString(R.string.unsubscribe_text)
-                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.requestData()
                 }
+                unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
             }
 
             retryBtn.setOnClickListener {
