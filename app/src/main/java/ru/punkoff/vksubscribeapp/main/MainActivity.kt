@@ -101,9 +101,7 @@ class MainActivity : AppCompatActivity() {
         setEnabled(true)
         val count = viewModel.getSubscriptionsSize()
         if (count == 0) {
-            setTranslateAnimation(false, binding.unsubscribeBtn.rootUnsubscribeBtn)
-        } else if (count == 1 && binding.unsubscribeBtn.counter.text == "0") {
-            setTranslateAnimation(true, binding.unsubscribeBtn.rootUnsubscribeBtn)
+            binding.unsubscribeBtn.rootUnsubscribeBtn.visibility = View.GONE
         }
         with(binding) {
             unsubscribeBtn.counter.text = count.toString()
@@ -252,14 +250,13 @@ class MainActivity : AppCompatActivity() {
                 if (it.isSelected) {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.subscribe)
                     unsubscribeTv.text = getString(R.string.subscribe_text)
-                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.showUnsubscribed()
                 } else {
                     unsubscribeBtn.unsubscribeTvBtn.text = getString(R.string.unsubscribe)
                     unsubscribeTv.text = getString(R.string.unsubscribe_text)
-                    unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
                     viewModel.requestData()
                 }
+                unsubscribeBtn.rootUnsubscribeBtn.requestLayout()
             }
 
             retryBtn.setOnClickListener {

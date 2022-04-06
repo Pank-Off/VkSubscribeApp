@@ -30,7 +30,5 @@ fun setTranslateAnimation(show: Boolean, view: View) {
                 fillAfter = true
             }
         )
-
-        view.visibility = View.GONE
     }
 }
