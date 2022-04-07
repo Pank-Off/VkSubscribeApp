@@ -11,27 +11,27 @@ import javax.inject.Inject
 
 class VkApiImpl @Inject constructor(private val userId: UserId?) : VkApi {
 
-    override fun getGroups() = flow {
+    override suspend fun getGroups() = flow {
         val response = VK.executeSync(GroupsService().groupsGetExtended(userId = userId))
         emit(response)
     }
 
-    override fun leaveGroups(subscriptions: List<Subscription>) {
+    override suspend fun leaveGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             VK.executeSync(GroupsService().groupsLeave(it.groupId!!))
         }
     }
 
-    override fun joinGroups(subscriptions: List<Subscription>) {
+    override suspend fun joinGroups(subscriptions: List<Subscription>) {
         subscriptions.forEach {
             VK.executeSync(GroupsService().groupsJoin(it.groupId))
         }
     }
 
-    override fun getLastPost(groupId: UserId?) =
+    override suspend fun getLastPost(groupId: UserId?) =
         VK.executeSync(WallService().wallGetExtended(groupId, count = 2))
 
-    override fun getGroupById(groupId: UserId) =
+    override suspend fun getGroupById(groupId: UserId) =
         VK.executeSync(
             GroupsService().groupsGetById(
                 listOf(groupId),

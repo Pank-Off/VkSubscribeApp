@@ -4,7 +4,7 @@ import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.model.Subscription
 
 interface LocalRepository {
-    fun insert(subscriptions: List<Subscription>)
-    fun delete(subscriptions: List<Subscription>)
-    fun getAll(): MainViewState
+    suspend fun insert(subscriptions: List<Subscription>)
+    suspend fun delete(subscriptions: List<Subscription>)
+    suspend fun getAll(): MainViewState
 }
