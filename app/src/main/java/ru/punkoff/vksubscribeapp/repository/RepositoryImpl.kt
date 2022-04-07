@@ -18,7 +18,7 @@ class RepositoryImpl
 
     private val subscriptions = mutableListOf<Subscription>()
 
-    override fun showUnsubscribed(): MainViewState = localRepository.getAll()
+    override suspend fun showUnsubscribed(): MainViewState = localRepository.getAll()
 
     override suspend fun getGroups(): MainViewState {
 
@@ -84,7 +84,7 @@ class RepositoryImpl
         return MainViewState.SubscribeError(State(it))
     })
 
-    override fun getSubscriptionInfo(groupId: Long): BottomSheetViewState = Result.runCatching {
+    override suspend fun getSubscriptionInfo(groupId: Long): BottomSheetViewState = Result.runCatching {
         val time = networkRepository.getLastPost(groupId)
         val group = networkRepository.getGroupById(groupId)[0]
         val url = "${Constants.VK_BASE_URL}${group.screenName}"

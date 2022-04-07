@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import ru.punkoff.vksubscribeapp.model.Subscription
 
 interface NetworkRepository {
-    fun getGroups(): Flow<NetworkState>
-    fun leaveGroups(subscriptions: List<Subscription>)
-    fun joinGroups(subscriptions: List<Subscription>)
+    suspend fun getGroups(): Flow<NetworkState>
+    suspend fun leaveGroups(subscriptions: List<Subscription>)
+    suspend fun joinGroups(subscriptions: List<Subscription>)
 
-    fun getLastPost(groupId: Long): Long
-    fun getGroupById(groupId: Long): List<GroupsGroupFull>
+    suspend fun getLastPost(groupId: Long): Long
+    suspend fun getGroupById(groupId: Long): List<GroupsGroupFull>
 }

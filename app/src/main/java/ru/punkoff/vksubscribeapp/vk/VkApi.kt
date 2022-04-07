@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import ru.punkoff.vksubscribeapp.model.Subscription
 
 interface VkApi {
-    fun getGroups(): Flow<GroupsGetObjectExtendedResponse>
-    fun leaveGroups(subscriptions: List<Subscription>)
-    fun joinGroups(subscriptions: List<Subscription>)
-    fun getLastPost(groupId: UserId?): WallGetExtendedResponse
-    fun getGroupById(groupId: UserId): List<GroupsGroupFull>
+    suspend fun getGroups(): Flow<GroupsGetObjectExtendedResponse>
+    suspend fun leaveGroups(subscriptions: List<Subscription>)
+    suspend fun joinGroups(subscriptions: List<Subscription>)
+    suspend fun getLastPost(groupId: UserId?): WallGetExtendedResponse
+    suspend fun getGroupById(groupId: UserId): List<GroupsGroupFull>
 }

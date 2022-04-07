@@ -13,7 +13,7 @@ import javax.inject.Inject
 class NetworkRepositoryImpl @Inject constructor(private val vkApi: VkApi) :
     NetworkRepository {
 
-    override fun getGroups() = flow<NetworkState> {
+    override suspend fun getGroups() = flow<NetworkState> {
         vkApi.getGroups().collect {
             Log.i(javaClass.simpleName, "DataSize: ${it.count}")
             emit(NetworkState.Success(it.items))
@@ -22,15 +22,15 @@ class NetworkRepositoryImpl @Inject constructor(private val vkApi: VkApi) :
         emit(NetworkState.Error(it))
     }
 
-    override fun leaveGroups(subscriptions: List<Subscription>) {
+    override suspend fun leaveGroups(subscriptions: List<Subscription>) {
         vkApi.leaveGroups(subscriptions)
     }
 
-    override fun joinGroups(subscriptions: List<Subscription>) {
+    override suspend fun joinGroups(subscriptions: List<Subscription>) {
         vkApi.joinGroups(subscriptions)
     }
 
-    override fun getLastPost(groupId: Long): Long {
+    override suspend fun getLastPost(groupId: Long): Long {
         val id = UserId(-groupId)
         val lastPost = vkApi.getLastPost(id)
         Log.e(javaClass.simpleName, "LastPost: ${lastPost.items[0].date}")
@@ -40,6 +40,6 @@ class NetworkRepositoryImpl @Inject constructor(private val vkApi: VkApi) :
         return correctTime
     }
 
-    override fun getGroupById(groupId: Long): List<GroupsGroupFull> =
+    override suspend fun getGroupById(groupId: Long): List<GroupsGroupFull> =
         vkApi.getGroupById(UserId(groupId))
 }
