@@ -1,8 +1,8 @@
 package ru.punkoff.vksubscribeapp.data.repository
 
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
-import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.data.model.Subscription
+import ru.punkoff.vksubscribeapp.main.MainViewState
 
 interface Repository {
     suspend fun getGroups(): MainViewState

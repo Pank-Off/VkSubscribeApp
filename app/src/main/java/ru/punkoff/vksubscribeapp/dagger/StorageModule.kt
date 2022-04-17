@@ -2,11 +2,14 @@ package ru.punkoff.vksubscribeapp.dagger
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ru.punkoff.vksubscribeapp.data.SharedPreferenceManager
+import ru.punkoff.vksubscribeapp.data.SharedPreferenceManagerImpl
 import ru.punkoff.vksubscribeapp.data.room.Database
 import ru.punkoff.vksubscribeapp.data.room.SubscribeDao
 import javax.inject.Singleton
@@ -28,4 +31,11 @@ class DaoModule {
     fun provideSubscribeDao(database: Database): SubscribeDao {
         return database.subscribeDao()
     }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+interface StorageModuleBinds {
+    @Binds
+    @Singleton
+    fun bindsPreferencesManager(impl: SharedPreferenceManagerImpl): SharedPreferenceManager
 }

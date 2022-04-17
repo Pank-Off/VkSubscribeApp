@@ -12,9 +12,9 @@ import androidx.viewpager2.widget.ViewPager2.*
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
+import ru.punkoff.vksubscribeapp.data.model.OnboardingModel
 import ru.punkoff.vksubscribeapp.databinding.ActivityOnboardingBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
-import ru.punkoff.vksubscribeapp.data.model.OnboardingModel
 
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var sliderAdapter: SliderAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isOnboardingSeen()) {
+        if (viewModel.isOnboardingSeen()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
@@ -115,19 +115,8 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun finishOnboarding() {
-        val preferences = applicationContext.getSharedPreferences(ONBOARD_PREFS, MODE_PRIVATE)
-        preferences.edit().putBoolean(PREF_ONBOADRING_SEEN, true).apply()
+        viewModel.finishOnboarding()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-    }
-
-    private fun isOnboardingSeen(): Boolean {
-        val preferences = applicationContext.getSharedPreferences(ONBOARD_PREFS, MODE_PRIVATE)
-        return preferences.contains(PREF_ONBOADRING_SEEN)
-    }
-
-    companion object {
-        const val ONBOARD_PREFS = "ONBOARD_PREFS"
-        const val PREF_ONBOADRING_SEEN = "PREF_ONBOADRING_SEEN"
     }
 }

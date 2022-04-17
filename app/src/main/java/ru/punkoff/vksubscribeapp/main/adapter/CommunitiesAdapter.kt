@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.generic.RoundingParams
 import ru.punkoff.vksubscribeapp.R
-import ru.punkoff.vksubscribeapp.databinding.ItemCommunityBinding
 import ru.punkoff.vksubscribeapp.data.model.Subscription
+import ru.punkoff.vksubscribeapp.databinding.ItemCommunityBinding
 
 val COMMUNITIES_COMPARATOR = object : DiffUtil.ItemCallback<Subscription>() {
     override fun areItemsTheSame(oldItem: Subscription, newItem: Subscription): Boolean =
