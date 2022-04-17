@@ -13,17 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VkSubscribeApp">
         <activity
-            android:name=".main.MainActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".login.LoginActivity"
+            android:name=".onboarding.OnboardingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".main.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true">
+
         </activity>
     </application>
 
