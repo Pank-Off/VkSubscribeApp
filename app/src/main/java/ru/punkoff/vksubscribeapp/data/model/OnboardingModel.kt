@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.model
+package ru.punkoff.vksubscribeapp.data.model
 
 import androidx.annotation.DrawableRes
 

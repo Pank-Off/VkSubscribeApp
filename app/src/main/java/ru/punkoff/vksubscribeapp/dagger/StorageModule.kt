@@ -7,8 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.punkoff.vksubscribeapp.room.Database
-import ru.punkoff.vksubscribeapp.room.SubscribeDao
+import ru.punkoff.vksubscribeapp.data.room.Database
+import ru.punkoff.vksubscribeapp.data.room.SubscribeDao
 import javax.inject.Singleton
 
 @Module(includes = [DaoModule::class])

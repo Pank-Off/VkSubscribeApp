@@ -1,8 +1,8 @@
-package ru.punkoff.vksubscribeapp.repository
+package ru.punkoff.vksubscribeapp.data.repository
 
 import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import kotlinx.coroutines.flow.Flow
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 interface NetworkRepository {
     suspend fun getGroups(): Flow<NetworkState>

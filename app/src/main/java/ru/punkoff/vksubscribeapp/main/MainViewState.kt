@@ -1,6 +1,6 @@
 package ru.punkoff.vksubscribeapp.main
 
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 sealed class MainViewState {
     object Loading : MainViewState()

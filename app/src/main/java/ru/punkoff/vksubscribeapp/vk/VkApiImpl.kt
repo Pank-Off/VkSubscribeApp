@@ -6,7 +6,7 @@ import com.vk.sdk.api.groups.GroupsService
 import com.vk.sdk.api.groups.dto.GroupsFields
 import com.vk.sdk.api.wall.WallService
 import kotlinx.coroutines.flow.flow
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 import javax.inject.Inject
 
 class VkApiImpl @Inject constructor(private val userId: UserId?) : VkApi {

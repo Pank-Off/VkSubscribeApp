@@ -13,8 +13,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import ru.punkoff.vksubscribeapp.model.Subscription
-import ru.punkoff.vksubscribeapp.repository.Repository
+import ru.punkoff.vksubscribeapp.data.model.Subscription
+import ru.punkoff.vksubscribeapp.data.repository.Repository
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelTest {

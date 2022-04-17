@@ -1,6 +1,6 @@
 package ru.punkoff.vksubscribeapp.main.adapter
 
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 interface OnItemClickListener {
     fun onClick(subscription: Subscription)

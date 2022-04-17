@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.databinding.ActivityOnboardingBinding
 import ru.punkoff.vksubscribeapp.login.LoginActivity
-import ru.punkoff.vksubscribeapp.model.OnboardingModel
+import ru.punkoff.vksubscribeapp.data.model.OnboardingModel
 
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {

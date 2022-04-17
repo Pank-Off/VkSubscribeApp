@@ -1,12 +1,12 @@
-package ru.punkoff.vksubscribeapp.repository
+package ru.punkoff.vksubscribeapp.data.repository
 
 import android.util.Log
 import kotlinx.coroutines.flow.collect
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetViewState
 import ru.punkoff.vksubscribeapp.main.MainViewState
 import ru.punkoff.vksubscribeapp.main.State
-import ru.punkoff.vksubscribeapp.model.Subscription
-import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
+import ru.punkoff.vksubscribeapp.data.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.utils.Constants
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
-package ru.punkoff.vksubscribeapp.repository
+package ru.punkoff.vksubscribeapp.data.repository
 
 import ru.punkoff.vksubscribeapp.main.MainViewState
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 interface LocalRepository {
     suspend fun insert(subscriptions: List<Subscription>)

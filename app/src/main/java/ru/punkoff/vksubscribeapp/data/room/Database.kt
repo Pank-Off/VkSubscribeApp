@@ -1,9 +1,9 @@
-package ru.punkoff.vksubscribeapp.room
+package ru.punkoff.vksubscribeapp.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 @Database(entities = [Subscription::class], version = 1, exportSchema = false)
 @TypeConverters(

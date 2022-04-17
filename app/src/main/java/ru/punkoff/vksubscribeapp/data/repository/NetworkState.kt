@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.repository
+package ru.punkoff.vksubscribeapp.data.repository
 
 import com.vk.sdk.api.groups.dto.GroupsGroupFull
 

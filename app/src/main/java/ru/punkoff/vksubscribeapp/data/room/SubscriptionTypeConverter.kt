@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.room
+package ru.punkoff.vksubscribeapp.data.room
 
 import androidx.room.TypeConverter
 import com.vk.dto.common.id.UserId

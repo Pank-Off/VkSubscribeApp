@@ -1,11 +1,11 @@
-package ru.punkoff.vksubscribeapp.room
+package ru.punkoff.vksubscribeapp.data.room
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.vk.dto.common.id.UserId
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 
 @Dao
 interface SubscribeDao {

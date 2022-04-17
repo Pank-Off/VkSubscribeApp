@@ -2,7 +2,7 @@ package ru.punkoff.vksubscribeapp.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.punkoff.vksubscribeapp.model.OnboardingModel
+import ru.punkoff.vksubscribeapp.data.model.OnboardingModel
 
 class SliderAdapter(
     activity: OnboardingActivity,

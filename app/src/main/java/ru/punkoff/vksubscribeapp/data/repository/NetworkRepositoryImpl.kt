@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.repository
+package ru.punkoff.vksubscribeapp.data.repository
 
 import android.util.Log
 import com.vk.dto.common.id.UserId
@@ -6,7 +6,7 @@ import com.vk.sdk.api.groups.dto.GroupsGroupFull
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import ru.punkoff.vksubscribeapp.model.Subscription
+import ru.punkoff.vksubscribeapp.data.model.Subscription
 import ru.punkoff.vksubscribeapp.vk.VkApi
 import javax.inject.Inject
 

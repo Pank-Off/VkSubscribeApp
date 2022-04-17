@@ -1,6 +1,6 @@
 package ru.punkoff.vksubscribeapp.bottomsheet
 
-import ru.punkoff.vksubscribeapp.model.SubscriptionInfo
+import ru.punkoff.vksubscribeapp.data.model.SubscriptionInfo
 
 sealed class BottomSheetViewState {
     object Loading : BottomSheetViewState()
