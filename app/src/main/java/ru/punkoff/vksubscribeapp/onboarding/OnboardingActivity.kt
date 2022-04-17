@@ -28,7 +28,10 @@ class OnboardingActivity : AppCompatActivity() {
     private lateinit var sliderAdapter: SliderAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isOnboardingSeen()) startActivity(Intent(this, LoginActivity::class.java))
+        if (isOnboardingSeen()) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -115,6 +118,7 @@ class OnboardingActivity : AppCompatActivity() {
         val preferences = applicationContext.getSharedPreferences(ONBOARD_PREFS, MODE_PRIVATE)
         preferences.edit().putBoolean(PREF_ONBOADRING_SEEN, true).apply()
         startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     private fun isOnboardingSeen(): Boolean {
