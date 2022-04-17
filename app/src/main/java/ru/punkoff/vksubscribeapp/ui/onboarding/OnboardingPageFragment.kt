@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.onboarding
+package ru.punkoff.vksubscribeapp.ui.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater

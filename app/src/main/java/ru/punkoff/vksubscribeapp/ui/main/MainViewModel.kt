@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.main
+package ru.punkoff.vksubscribeapp.ui.main
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

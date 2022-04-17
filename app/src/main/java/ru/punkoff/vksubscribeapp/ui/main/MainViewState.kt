@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.main
+package ru.punkoff.vksubscribeapp.ui.main
 
 import ru.punkoff.vksubscribeapp.data.model.Subscription
 

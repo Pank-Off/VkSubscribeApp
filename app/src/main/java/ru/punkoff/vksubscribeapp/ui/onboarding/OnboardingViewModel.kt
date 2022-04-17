@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.onboarding
+package ru.punkoff.vksubscribeapp.ui.onboarding
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

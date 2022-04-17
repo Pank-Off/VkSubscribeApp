@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.onboarding
+package ru.punkoff.vksubscribeapp.ui.onboarding
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.data.model.OnboardingModel
 import ru.punkoff.vksubscribeapp.databinding.ActivityOnboardingBinding
-import ru.punkoff.vksubscribeapp.login.LoginActivity
+import ru.punkoff.vksubscribeapp.ui.login.LoginActivity
 
 @AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {

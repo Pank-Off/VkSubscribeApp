@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VkSubscribeApp">
         <activity
-            android:name=".onboarding.OnboardingActivity"
+            android:name="ru.punkoff.vksubscribeapp.ui.onboarding.OnboardingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name="ru.punkoff.vksubscribeapp.ui.main.MainActivity"
             android:exported="false" />
 
         <activity
-            android:name=".login.LoginActivity"
+            android:name="ru.punkoff.vksubscribeapp.ui.login.LoginActivity"
             android:exported="true">
 
         </activity>

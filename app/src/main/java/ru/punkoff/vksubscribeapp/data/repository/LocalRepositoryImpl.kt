@@ -2,7 +2,7 @@ package ru.punkoff.vksubscribeapp.data.repository
 
 import ru.punkoff.vksubscribeapp.data.model.Subscription
 import ru.punkoff.vksubscribeapp.data.room.SubscribeDao
-import ru.punkoff.vksubscribeapp.main.MainViewState
+import ru.punkoff.vksubscribeapp.ui.main.MainViewState
 import javax.inject.Inject
 
 class LocalRepositoryImpl @Inject constructor(private val dao: SubscribeDao) : LocalRepository {

@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.onboarding
+package ru.punkoff.vksubscribeapp.ui.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

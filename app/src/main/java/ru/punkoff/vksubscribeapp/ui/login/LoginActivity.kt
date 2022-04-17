@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.login
+package ru.punkoff.vksubscribeapp.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
 import com.vk.api.sdk.utils.VKUtils.getCertificateFingerprint
 import ru.punkoff.vksubscribeapp.R
-import ru.punkoff.vksubscribeapp.main.MainActivity
+import ru.punkoff.vksubscribeapp.ui.main.MainActivity
 import ru.punkoff.vksubscribeapp.utils.isOnline
 
 class LoginActivity : AppCompatActivity() {

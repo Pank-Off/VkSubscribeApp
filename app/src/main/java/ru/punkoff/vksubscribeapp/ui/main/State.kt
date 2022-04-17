@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.main
+package ru.punkoff.vksubscribeapp.ui.main
 
 open class State<out T>(private val content: T) {
 

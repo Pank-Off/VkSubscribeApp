@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.main
+package ru.punkoff.vksubscribeapp.ui.main
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -14,8 +14,8 @@ import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.bottomsheet.BottomSheetFragment
 import ru.punkoff.vksubscribeapp.data.model.Subscription
 import ru.punkoff.vksubscribeapp.databinding.ActivityMainBinding
-import ru.punkoff.vksubscribeapp.main.adapter.CommunitiesAdapter
-import ru.punkoff.vksubscribeapp.main.adapter.OnItemClickListener
+import ru.punkoff.vksubscribeapp.ui.main.adapter.CommunitiesAdapter
+import ru.punkoff.vksubscribeapp.ui.main.adapter.OnItemClickListener
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.isOnline
 import ru.punkoff.vksubscribeapp.utils.setTranslateAnimation

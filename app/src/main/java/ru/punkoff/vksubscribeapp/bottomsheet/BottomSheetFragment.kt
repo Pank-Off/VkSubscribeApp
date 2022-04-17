@@ -14,7 +14,7 @@ import ru.punkoff.vksubscribeapp.R
 import ru.punkoff.vksubscribeapp.data.model.Subscription
 import ru.punkoff.vksubscribeapp.data.model.SubscriptionInfo
 import ru.punkoff.vksubscribeapp.databinding.BottomSheetLayoutBinding
-import ru.punkoff.vksubscribeapp.main.MainActivity
+import ru.punkoff.vksubscribeapp.ui.main.MainActivity
 import ru.punkoff.vksubscribeapp.utils.collectFlow
 import ru.punkoff.vksubscribeapp.utils.isOnline
 import ru.punkoff.vksubscribeapp.utils.parseCount

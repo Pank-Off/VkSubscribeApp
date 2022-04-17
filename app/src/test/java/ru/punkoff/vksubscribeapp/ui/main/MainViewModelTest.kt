@@ -1,4 +1,4 @@
-package ru.punkoff.vksubscribeapp.main
+package ru.punkoff.vksubscribeapp.ui.main
 
 import io.mockk.MockKAnnotations
 import io.mockk.every
