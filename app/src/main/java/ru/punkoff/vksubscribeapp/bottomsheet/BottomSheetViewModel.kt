@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.punkoff.vksubscribeapp.base.BaseViewModel
-import ru.punkoff.vksubscribeapp.repository.Repository
+import ru.punkoff.vksubscribeapp.data.repository.Repository
 import javax.inject.Inject
 
 @HiltViewModel

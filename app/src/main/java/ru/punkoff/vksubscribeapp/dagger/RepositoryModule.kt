@@ -4,7 +4,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import ru.punkoff.vksubscribeapp.repository.*
+import ru.punkoff.vksubscribeapp.data.repository.*
 
 @Module
 @InstallIn(SingletonComponent::class)

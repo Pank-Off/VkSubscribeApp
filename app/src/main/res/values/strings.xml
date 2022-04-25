@@ -15,5 +15,11 @@
     <string name="something_went_wrong_text">Что то пошло не так..</string>
     <string name="check_your_internet_message">Проверьте ваше соединение с интернетом</string>
     <string name="retry_text">Повторить попытку</string>
+    <string name="welcome">Добро пожаловать в приложение ВК подписки!</string>
+    <string name="next">Далее</string>
+    <string name="welcome_subtitle">Это приложение поможет отфильтровать ваши группы в социальной сети Вконтакте</string>
+    <string name="onboarding_subscribe_description">Отписывайтесь от сообществ, не боясь расстаться с ним навсегда. Все отписанные сообщества сохраняются в приложении в отдельном окне</string>
+    <string name="onboarding_full_info_title">Полная информация о группе</string>
+    <string name="onboarding_full_info_description">Также можете просматривать информацию о группе и перейти на страницу в официальный клиект ВК</string>
     <integer name="com_vk_sdk_AppId">8118301</integer>
 </resources>
