@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VkSubscribeApp</string>
+    <string name="app_name">Subscriptions - VK подписки</string>
     <string name="sign_in">Войти</string>
     <string name="communities">Сообщества</string>
     <string name="unsubscribe_text">Отписаться от сообществ</string>
