@@ -6,8 +6,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 interface SharedPreferenceManager {
-    fun isOnboadingSeen(): Boolean
-    fun setOnboadingSeen()
+    fun isOnboardingSeen(): Boolean
+    fun setOnboardingSeen()
 }
 
 class SharedPreferenceManagerImpl @Inject constructor(@ApplicationContext context: Context) : SharedPreferenceManager {
@@ -16,11 +16,11 @@ class SharedPreferenceManagerImpl @Inject constructor(@ApplicationContext contex
         context.getSharedPreferences(ONBOAR_PREFS, Context.MODE_PRIVATE)
     }
 
-    override fun isOnboadingSeen(): Boolean {
+    override fun isOnboardingSeen(): Boolean {
         return preferences.contains(PREF_ONBOADRING_SEEN)
     }
 
-    override fun setOnboadingSeen() {
+    override fun setOnboardingSeen() {
         preferences.edit().putBoolean(PREF_ONBOADRING_SEEN, true).apply()
     }
 

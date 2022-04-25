@@ -30,8 +30,8 @@ class OnboardingViewModel @Inject constructor(private val sharedPreferenceManage
     }
 
     fun finishOnboarding() {
-        sharedPreferenceManager.setOnboadingSeen()
+        sharedPreferenceManager.setOnboardingSeen()
     }
 
-    fun isOnboardingSeen(): Boolean = sharedPreferenceManager.isOnboadingSeen()
+    fun isOnboardingSeen(): Boolean = sharedPreferenceManager.isOnboardingSeen()
 }
